@@ -122,9 +122,7 @@ export default function NewsDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-8">
-      <header className="flex items-center justify-between px-4 py-3 sticky top-0 bg-background z-50">
-        <div className="w-9" />
-        <h1 className="text-sm font-medium text-muted-foreground">News</h1>
+      <header className="flex items-center justify-end px-4 py-3 sticky top-0 bg-background z-50">
         <Button 
           size="icon" 
           variant="ghost" 
