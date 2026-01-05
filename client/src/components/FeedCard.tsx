@@ -73,7 +73,11 @@ export function FeedCard({ item }: FeedCardProps) {
         </h4>
         
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
+          <Link 
+            href={`/news/${item.id}/sources`}
+            className="flex items-center gap-1.5 hover:opacity-70 transition-opacity"
+            data-testid={`link-sources-${item.id}`}
+          >
             <div className="flex items-center -space-x-2">
               {sources.map((source, i) => (
                 <div 
@@ -91,7 +95,7 @@ export function FeedCard({ item }: FeedCardProps) {
             <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
               {item.sourceCount}+ Sources
             </span>
-          </div>
+          </Link>
           
           <div className={cn(
             "flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary",
