@@ -95,7 +95,7 @@ export default function StockDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <header className="flex items-center justify-between px-4 py-3">
+      <header className="flex items-center justify-start px-4 py-3">
         <Button 
           size="icon" 
           variant="ghost" 
@@ -104,11 +104,6 @@ export default function StockDetail() {
         >
           <ArrowLeft className="w-6 h-6 text-rh-green" />
         </Button>
-        <div className="flex items-center gap-2">
-          <Button size="icon" variant="ghost">
-            <TrendingUp className="w-5 h-5" />
-          </Button>
-        </div>
       </header>
 
       <main className="px-5">
