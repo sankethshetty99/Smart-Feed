@@ -28,7 +28,7 @@ export function FeedCard({ item }: FeedCardProps) {
   return (
     <div className="group relative bg-card hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99]">
       <div className="mb-4">
-        <h4 className="text-xl font-bold leading-tight tracking-tight mb-3 group-hover:text-primary transition-colors">
+        <h4 className="text-xl leading-tight tracking-tight mb-3 group-hover:text-primary transition-colors font-semibold">
           {item.summaryHeadline}
         </h4>
         
@@ -62,7 +62,6 @@ export function FeedCard({ item }: FeedCardProps) {
           </div>
         </div>
       </div>
-
       <div className="mt-4 flex flex-wrap gap-3">
         <div 
           className="flex items-center text-sm"
