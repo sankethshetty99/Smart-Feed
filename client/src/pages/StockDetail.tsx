@@ -1,5 +1,5 @@
 import { useRoute, useLocation } from "wouter";
-import { ArrowLeft, ArrowUpRight, ArrowDownRight, TrendingUp, ChevronDown } from "lucide-react";
+import { ChevronLeft, ArrowUpRight, ArrowDownRight, TrendingUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -102,7 +102,7 @@ export default function StockDetail() {
           onClick={() => setLocation("/")}
           data-testid="button-back"
         >
-          <ArrowLeft className="w-6 h-6 text-rh-green" />
+          <ChevronLeft className="w-5 h-5" />
         </Button>
       </header>
 
