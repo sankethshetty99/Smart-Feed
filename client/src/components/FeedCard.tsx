@@ -33,20 +33,22 @@ export function FeedCard({ item }: FeedCardProps) {
         </h4>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center -space-x-2">
-            {sources.map((source, i) => (
-              <div 
-                key={i} 
-                className={cn(
-                  "w-6 h-6 rounded-full border-2 border-card flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
-                  source.color
-                )}
-                title={source.name}
-              >
-                {source.name[0]}
-              </div>
-            ))}
-            <span className="ml-4 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center -space-x-2">
+              {sources.map((source, i) => (
+                <div 
+                  key={i} 
+                  className={cn(
+                    "w-6 h-6 rounded-full border-2 border-card flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
+                    source.color
+                  )}
+                  title={source.name}
+                >
+                  {source.name[0]}
+                </div>
+              ))}
+            </div>
+            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
               {item.sourceCount}+ Sources
             </span>
           </div>
