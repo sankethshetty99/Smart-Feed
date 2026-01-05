@@ -58,16 +58,14 @@ export async function registerRoutes(
 
 async function ensureDatabaseSeeded() {
   try {
-    const users = await storage.getUsers();
-    const feed = users.length > 0 ? await storage.getSmartFeed(users[0].id) : [];
-    if (users.length === 0 || feed.length < 7) {
-      console.log("Database empty or incomplete, seeding with initial data...");
-      // Clear existing data first if partial
-      if (users.length > 0) {
-        console.log("Clearing incomplete data...");
-      }
+    const allFeedItems = await storage.getAllFeedItems();
+    if (allFeedItems.length < 10) {
+      console.log("Database empty or incomplete, clearing and reseeding...");
+      await storage.clearAll();
       await seedDatabase();
-      console.log("Database seeded successfully");
+      console.log("Database seeded successfully with full data");
+    } else {
+      console.log("Database already has sufficient data");
     }
   } catch (error) {
     console.error("Error checking/seeding database:", error);

@@ -10,6 +10,8 @@ export interface IStorage {
   getUsers(): Promise<User[]>;
   getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock })[]>;
   getFeedItem(id: number): Promise<(FeedItem & { stock: Stock }) | undefined>;
+  getAllFeedItems(): Promise<FeedItem[]>;
+  clearAll(): Promise<void>;
   // Seeding methods
   createUser(user: typeof users.$inferInsert): Promise<User>;
   createStock(stock: typeof stocks.$inferInsert): Promise<Stock>;
@@ -128,6 +130,17 @@ export class DatabaseStorage implements IStorage {
   async createFeedItem(item: typeof feedItems.$inferInsert): Promise<FeedItem> {
     const [newItem] = await db.insert(feedItems).values(item).returning();
     return newItem;
+  }
+
+  async getAllFeedItems(): Promise<FeedItem[]> {
+    return await db.select().from(feedItems);
+  }
+
+  async clearAll(): Promise<void> {
+    await db.delete(feedItems);
+    await db.delete(userInterests);
+    await db.delete(stocks);
+    await db.delete(users);
   }
 }
 
