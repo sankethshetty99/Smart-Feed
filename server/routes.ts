@@ -9,6 +9,9 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
   
+  // Auto-seed database on startup if empty
+  await ensureDatabaseSeeded();
+  
   app.get(api.feed.get.path, async (req, res) => {
     const userId = Number(req.params.userId);
     if (isNaN(userId)) {
@@ -51,6 +54,19 @@ export async function registerRoutes(
   });
 
   return httpServer;
+}
+
+async function ensureDatabaseSeeded() {
+  try {
+    const users = await storage.getUsers();
+    if (users.length === 0) {
+      console.log("Database empty, seeding with initial data...");
+      await seedDatabase();
+      console.log("Database seeded successfully");
+    }
+  } catch (error) {
+    console.error("Error checking/seeding database:", error);
+  }
 }
 
 async function seedDatabase() {
