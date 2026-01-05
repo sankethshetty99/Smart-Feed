@@ -63,11 +63,6 @@ export default function Feed() {
           )}
         </div>
         
-        <div className="p-6 text-center">
-          <p className="text-xs text-muted-foreground">
-            That's all for now! Check back later for more updates on your portfolio.
-          </p>
-        </div>
       </main>
 
       <BottomNav />
