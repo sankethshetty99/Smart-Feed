@@ -170,10 +170,10 @@ export default function NewsDetail() {
             Summary
           </h3>
           <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
-            This news item covers developments related to {news.stock.companyName} ({news.ticker}) 
-            in the {news.stock.sector} sector. The market sentiment is currently {isBullish ? "positive" : "negative"}, 
-            with the stock showing a {Math.abs(news.stock.dayChangePercent).toFixed(2)}% 
-            {news.stock.dayChangePercent >= 0 ? " gain" : " decline"} today.
+            {news.summaryHeadline} Multiple sources are reporting on this development, 
+            with analysts indicating a {isBullish ? "positive" : "cautious"} outlook. 
+            The market response has been {isBullish ? "favorable" : "mixed"}, 
+            as investors assess the potential implications across the {news.stock.sector} sector and related industries.
           </p>
         </div>
 
