@@ -35,6 +35,16 @@ export const api = {
       },
     },
   },
+  news: {
+    get: {
+      method: 'GET' as const,
+      path: '/api/news/:id',
+      responses: {
+        200: feedItemWithStockSchema,
+        404: errorSchemas.notFound,
+      },
+    },
+  },
   users: {
     get: {
       method: 'GET' as const,

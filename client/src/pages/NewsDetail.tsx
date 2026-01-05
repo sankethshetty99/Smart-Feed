@@ -1,102 +1,44 @@
 import { useRoute, useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
+import type { z } from "zod";
+import type { api } from "@shared/routes";
 
-const mockNewsData: Record<number, {
-  id: number;
-  headline: string;
-  sentiment: "bullish" | "bearish";
-  sourceCount: number;
-  summary: string;
-  affectedStocks: Array<{
-    ticker: string;
-    companyName: string;
-    price: number;
-    change: number;
-  }>;
-}> = {
-  1: {
-    id: 1,
-    headline: "Fed Signals Potential Rate Cuts Amid Cooling Inflation Data",
-    sentiment: "bullish",
-    sourceCount: 12,
-    summary: "The Federal Reserve indicated it may begin cutting interest rates in the coming months as inflation continues to moderate. Multiple Fed officials expressed confidence that price pressures are easing, potentially paving the way for monetary policy easing. Markets responded positively to the news, with financial stocks leading gains.",
-    affectedStocks: [
-      { ticker: "JPM", companyName: "JPMorgan Chase", price: 195.40, change: 2.15 },
-      { ticker: "BAC", companyName: "Bank of America", price: 34.25, change: 1.87 },
-      { ticker: "GS", companyName: "Goldman Sachs", price: 385.60, change: 2.45 },
-      { ticker: "MS", companyName: "Morgan Stanley", price: 92.30, change: 1.92 },
-    ],
-  },
-  2: {
-    id: 2,
-    headline: "New Export Controls Spark Uncertainty in Semiconductor Supply Chains",
-    sentiment: "bearish",
-    sourceCount: 8,
-    summary: "Recent government announcements regarding export restrictions on advanced semiconductor technology have created uncertainty in global chip supply chains. Industry analysts warn that these controls could impact production timelines and increase costs for major chipmakers. The news sent semiconductor stocks lower in afternoon trading.",
-    affectedStocks: [
-      { ticker: "NVDA", companyName: "NVIDIA Corp", price: 875.20, change: -1.50 },
-      { ticker: "AMD", companyName: "Advanced Micro", price: 145.80, change: -0.87 },
-      { ticker: "INTC", companyName: "Intel Corp", price: 42.50, change: -0.58 },
-      { ticker: "TSM", companyName: "Taiwan Semi", price: 142.85, change: -1.23 },
-    ],
-  },
-  3: {
-    id: 3,
-    headline: "Major Tech Acquisitions Reshape Cloud Computing Landscape",
-    sentiment: "bullish",
-    sourceCount: 15,
-    summary: "A wave of strategic acquisitions in the cloud computing sector is reshaping competitive dynamics. Major tech giants are expanding their infrastructure capabilities through targeted purchases, signaling continued growth in enterprise cloud services. Analysts expect this consolidation trend to benefit established players.",
-    affectedStocks: [
-      { ticker: "MSFT", companyName: "Microsoft Corp", price: 378.92, change: 2.18 },
-      { ticker: "AMZN", companyName: "Amazon.com", price: 178.25, change: 1.45 },
-      { ticker: "GOOGL", companyName: "Alphabet Inc", price: 142.85, change: 1.32 },
-      { ticker: "CRM", companyName: "Salesforce", price: 265.40, change: 1.78 },
-    ],
-  },
-  4: {
-    id: 4,
-    headline: "Electric Vehicle Demand Surges as Battery Costs Continue to Fall",
-    sentiment: "bullish",
-    sourceCount: 10,
-    summary: "Global electric vehicle sales have reached record levels as declining battery costs make EVs more accessible to mainstream consumers. Industry data shows battery pack prices have fallen significantly over the past year, improving profit margins for automakers and enabling more competitive pricing.",
-    affectedStocks: [
-      { ticker: "TSLA", companyName: "Tesla Inc", price: 248.50, change: 3.20 },
-      { ticker: "RIVN", companyName: "Rivian Auto", price: 18.45, change: 4.12 },
-      { ticker: "F", companyName: "Ford Motor", price: 12.85, change: 1.95 },
-      { ticker: "GM", companyName: "General Motors", price: 38.20, change: 1.67 },
-    ],
-  },
-  5: {
-    id: 5,
-    headline: "Streaming Wars Intensify as Platforms Battle for Subscriber Growth",
-    sentiment: "bearish",
-    sourceCount: 7,
-    summary: "Competition in the streaming industry has reached a fever pitch as major platforms struggle to maintain subscriber growth. Rising content costs and increased churn rates are putting pressure on profit margins. Some analysts predict further consolidation in the sector.",
-    affectedStocks: [
-      { ticker: "NFLX", companyName: "Netflix Inc", price: 485.20, change: -2.41 },
-      { ticker: "DIS", companyName: "Walt Disney", price: 112.30, change: -0.78 },
-      { ticker: "WBD", companyName: "Warner Bros", price: 8.45, change: -1.85 },
-      { ticker: "PARA", companyName: "Paramount", price: 11.20, change: -1.42 },
-    ],
-  },
-};
+type NewsItem = z.infer<typeof api.news.get.responses[200]>;
 
-function generateChartData(isPositive: boolean) {
+const mockTickers = [
+  { ticker: "AAPL", companyName: "Apple Inc.", price: 178.35, change: 1.24 },
+  { ticker: "GOOGL", companyName: "Alphabet Inc.", price: 142.85, change: -0.87 },
+  { ticker: "MSFT", companyName: "Microsoft Corp.", price: 378.92, change: 2.15 },
+  { ticker: "AMZN", companyName: "Amazon.com", price: 178.25, change: -1.32 },
+  { ticker: "META", companyName: "Meta Platforms", price: 485.60, change: 0.95 },
+  { ticker: "NFLX", companyName: "Netflix Inc.", price: 485.20, change: -2.41 },
+  { ticker: "AMD", companyName: "AMD Inc.", price: 145.80, change: 3.12 },
+  { ticker: "INTC", companyName: "Intel Corp.", price: 42.50, change: -0.58 },
+];
+
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function generateChartData(isPositive: boolean, seed: number) {
   const points = [];
   let value = 50;
   for (let i = 0; i < 30; i++) {
-    value += (Math.random() - (isPositive ? 0.4 : 0.6)) * 4;
+    const rand = seededRandom(seed + i);
+    value += (rand - (isPositive ? 0.4 : 0.6)) * 4;
     value = Math.max(20, Math.min(80, value));
     points.push(value);
   }
   return points;
 }
 
-function MiniStockChart({ isPositive }: { isPositive: boolean }) {
-  const data = generateChartData(isPositive);
+function MiniStockChart({ isPositive, seed }: { isPositive: boolean; seed: number }) {
+  const data = generateChartData(isPositive, seed);
   const color = isPositive ? "#00C805" : "#FF5000";
   
   const pathD = data.map((val, i) => {
@@ -123,14 +65,60 @@ export default function NewsDetail() {
   const [, params] = useRoute("/news/:id");
   const newsId = parseInt(params?.id || "1", 10);
 
-  const news = mockNewsData[newsId] || mockNewsData[1];
-  const isBullish = news.sentiment === "bullish";
+  const { data: news, isLoading, error } = useQuery<NewsItem>({
+    queryKey: ['/api/news', newsId],
+  });
 
   const sources = [
     { name: "Bloomberg", color: "bg-blue-600" },
     { name: "Reuters", color: "bg-orange-600" },
     { name: "CNBC", color: "bg-indigo-900" }
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error || !news) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="flex items-center justify-between px-4 py-3">
+          <div className="w-9" />
+          <h1 className="text-sm font-medium text-muted-foreground">News</h1>
+          <Button size="icon" variant="ghost" onClick={() => setLocation("/")} data-testid="button-back">
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+        </header>
+        <div className="px-5 py-8 text-center text-muted-foreground">
+          News item not found
+        </div>
+      </div>
+    );
+  }
+
+  const isBullish = news.sentimentScore >= 0;
+
+  const affectedStocks = [
+    { 
+      ticker: news.ticker, 
+      companyName: news.stock.companyName, 
+      price: news.stock.currentPrice, 
+      change: news.stock.dayChangePercent 
+    }
+  ];
+
+  const numAdditional = Math.floor(seededRandom(newsId) * 3) + 1;
+  for (let i = 0; i < numAdditional; i++) {
+    const mockIndex = Math.floor(seededRandom(newsId + i + 100) * mockTickers.length);
+    const mock = mockTickers[mockIndex];
+    if (!affectedStocks.find(s => s.ticker === mock.ticker)) {
+      affectedStocks.push(mock);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background pb-8">
@@ -157,7 +145,7 @@ export default function NewsDetail() {
         </div>
 
         <h2 className="text-2xl font-bold leading-tight mb-4" data-testid="text-headline">
-          {news.headline}
+          {news.summaryHeadline}
         </h2>
 
         <div className="flex items-center gap-1.5 mb-6">
@@ -185,7 +173,10 @@ export default function NewsDetail() {
             Summary
           </h3>
           <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
-            {news.summary}
+            This news item covers developments related to {news.stock.companyName} ({news.ticker}) 
+            in the {news.stock.sector} sector. The market sentiment is currently {isBullish ? "positive" : "negative"}, 
+            with the stock showing a {Math.abs(news.stock.dayChangePercent).toFixed(2)}% 
+            {news.stock.dayChangePercent >= 0 ? " gain" : " decline"} today.
           </p>
         </div>
 
@@ -194,7 +185,7 @@ export default function NewsDetail() {
             Affected Stocks
           </h3>
           <div className="flex flex-col divide-y divide-border/40">
-            {news.affectedStocks.map((stock) => {
+            {affectedStocks.map((stock, index) => {
               const isUp = stock.change >= 0;
               return (
                 <Link
@@ -213,7 +204,7 @@ export default function NewsDetail() {
                   </div>
                   
                   <div className="mx-4">
-                    <MiniStockChart isPositive={isUp} />
+                    <MiniStockChart isPositive={isUp} seed={newsId + index} />
                   </div>
                   
                   <div className={cn(

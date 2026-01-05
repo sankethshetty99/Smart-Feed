@@ -9,6 +9,7 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUsers(): Promise<User[]>;
   getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock })[]>;
+  getFeedItem(id: number): Promise<(FeedItem & { stock: Stock }) | undefined>;
   // Seeding methods
   createUser(user: typeof users.$inferInsert): Promise<User>;
   createStock(stock: typeof stocks.$inferInsert): Promise<Stock>;
@@ -84,6 +85,24 @@ export class DatabaseStorage implements IStorage {
     }
 
     return items;
+  }
+
+  async getFeedItem(id: number): Promise<(FeedItem & { stock: Stock }) | undefined> {
+    const [item] = await db
+      .select({
+        id: feedItems.id,
+        ticker: feedItems.ticker,
+        summaryHeadline: feedItems.summaryHeadline,
+        sentimentScore: feedItems.sentimentScore,
+        sourceCount: feedItems.sourceCount,
+        primarySourceName: feedItems.primarySourceName,
+        publishedAt: feedItems.publishedAt,
+        stock: stocks
+      })
+      .from(feedItems)
+      .innerJoin(stocks, eq(feedItems.ticker, stocks.ticker))
+      .where(eq(feedItems.id, id));
+    return item;
   }
 
   async createUser(user: typeof users.$inferInsert): Promise<User> {

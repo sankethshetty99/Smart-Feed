@@ -18,6 +18,18 @@ export async function registerRoutes(
     res.json(feed);
   });
 
+  app.get(api.news.get.path, async (req, res) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid news ID" });
+    }
+    const item = await storage.getFeedItem(id);
+    if (!item) {
+        return res.status(404).json({ message: "News item not found" });
+    }
+    res.json(item);
+  });
+
   app.get(api.users.get.path, async (req, res) => {
     const userId = Number(req.params.id);
     const user = await storage.getUser(userId);
