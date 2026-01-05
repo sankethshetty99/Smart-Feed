@@ -41,29 +41,8 @@ export default function Feed() {
       <Header title="Smart Feed" subtitle={`Welcome, ${user.username}`} />
 
       <main className="max-w-md mx-auto">
-        {/* Portfolio Summary Card */}
-        <div className="px-4 py-6">
-          <div className="bg-card border border-border rounded-3xl p-6 shadow-sm shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <Wallet className="w-24 h-24" />
-            </div>
-            
-            <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider mb-1">
-              Investing
-            </p>
-            <h2 className="text-3xl font-display font-bold tracking-tight mb-2">
-              ${portfolioValue.toLocaleString()}
-            </h2>
-            <div className="flex items-center text-sm font-semibold text-rh-green">
-              <TrendingUp className="w-4 h-4 mr-1" />
-              <span>+${dayChange} ({dayChangePercent}%)</span>
-              <span className="text-muted-foreground ml-2 font-normal">Today</span>
-            </div>
-          </div>
-        </div>
-
         {/* Section Header */}
-        <div className="px-5 mb-2 flex items-center justify-between">
+        <div className="px-5 mt-6 mb-2 flex items-center justify-between">
           <h3 className="text-lg font-bold tracking-tight">Today's Digest</h3>
           <button className="text-xs font-semibold text-primary flex items-center hover:opacity-80 transition-opacity">
             Customize <ArrowRight className="w-3 h-3 ml-0.5" />
