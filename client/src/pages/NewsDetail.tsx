@@ -132,7 +132,6 @@ export default function NewsDetail() {
           <ArrowLeft className="w-5 h-5" />
         </Button>
       </header>
-
       <main className="px-5">
         <div className={cn(
           "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
@@ -179,9 +178,7 @@ export default function NewsDetail() {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-            Affected Stocks
-          </h3>
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Relevant Stocks</h3>
           <div className="flex flex-col divide-y divide-border/40">
             {affectedStocks.map((stock, index) => {
               const isUp = stock.change >= 0;
