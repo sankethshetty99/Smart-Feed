@@ -1,5 +1,5 @@
 import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import type { z } from "zod";
 import type { api } from "@shared/routes";
@@ -28,10 +28,17 @@ function seededRandom(seed: number) {
 }
 
 export function FeedCard({ item }: FeedCardProps) {
+  const [, setLocation] = useLocation();
   const isSentimentPositive = item.sentimentScore >= 0;
   
   const sentimentColor = isSentimentPositive ? "text-rh-green" : "text-rh-red";
   const SentimentIcon = isSentimentPositive ? TrendingUp : TrendingDown;
+  
+  const handleCardClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('a')) return;
+    setLocation(`/news/${item.id}`);
+  };
   
   const sources = [
     { name: "Bloomberg", color: "bg-blue-600" },
@@ -55,7 +62,11 @@ export function FeedCard({ item }: FeedCardProps) {
   }
 
   return (
-    <div className="group relative bg-card hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99]">
+    <div 
+      className="group relative bg-card hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99] cursor-pointer"
+      onClick={handleCardClick}
+      data-testid={`card-news-${item.id}`}
+    >
       <div className="mb-4">
         <div className={cn(
           "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
