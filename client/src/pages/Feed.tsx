@@ -40,7 +40,7 @@ export default function Feed() {
     <div className="min-h-screen bg-background pb-20">
       <main className="max-w-md mx-auto pt-4">
         <div className="px-5 mb-6">
-          <h1 className="text-3xl font-bold tracking-tight">Smart Feed</h1>
+          <h1 className="text-3xl tracking-tight font-semibold">Smart Feed</h1>
         </div>
 
         {/* Feed List */}
@@ -64,7 +64,6 @@ export default function Feed() {
         </div>
         
       </main>
-
       <BottomNav />
     </div>
   );
