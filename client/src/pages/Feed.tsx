@@ -38,19 +38,11 @@ export default function Feed() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <Header title="Smart Feed" subtitle={`Welcome, ${user.username}`} />
+      <Header title="Smart Feed" />
 
       <main className="max-w-md mx-auto">
-        {/* Section Header */}
-        <div className="px-5 mt-6 mb-2 flex items-center justify-between">
-          <h3 className="text-lg font-bold tracking-tight">Today's Digest</h3>
-          <button className="text-xs font-semibold text-primary flex items-center hover:opacity-80 transition-opacity">
-            Customize <ArrowRight className="w-3 h-3 ml-0.5" />
-          </button>
-        </div>
-
         {/* Feed List */}
-        <div className="flex flex-col divide-y divide-border/40 border-t border-b border-border/40">
+        <div className="flex flex-col divide-y divide-border/40 border-t border-b border-border/40 mt-4">
           {feedItems && feedItems.length > 0 ? (
             feedItems.map((item, index) => (
               <motion.div
