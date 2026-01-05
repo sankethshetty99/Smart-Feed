@@ -6,9 +6,9 @@ export function BottomNav() {
   const [location] = useLocation();
 
   const navItems = [
-    { href: "/", label: "Feed", icon: Sparkles },
+    { href: "/", label: "Home", icon: Home },
+    { href: "/smart-feed", label: "Smart Feed", icon: Sparkles },
     { href: "/watchlist", label: "Watchlist", icon: Eye },
-    { href: "/profile", label: "Profile", icon: User },
   ];
 
   return (

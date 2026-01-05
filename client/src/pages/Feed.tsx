@@ -38,9 +38,11 @@ export default function Feed() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <Header title="Smart Feed" />
+      <main className="max-w-md mx-auto pt-4">
+        <div className="px-5 mb-6">
+          <h1 className="text-3xl font-bold tracking-tight">Smart Feed</h1>
+        </div>
 
-      <main className="max-w-md mx-auto">
         {/* Feed List */}
         <div className="flex flex-col divide-y divide-border/40 border-t border-b border-border/40 mt-4">
           {feedItems && feedItems.length > 0 ? (
