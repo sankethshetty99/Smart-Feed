@@ -1,6 +1,6 @@
 import { useRoute, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from "lucide-react";
+import { ChevronLeft, ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
@@ -122,14 +122,14 @@ export default function NewsDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-8">
-      <header className="flex items-center justify-end px-4 py-3 sticky top-0 bg-background z-50">
+      <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
         <Button 
           size="icon" 
           variant="ghost" 
           onClick={() => setLocation("/")}
           data-testid="button-back"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5" />
         </Button>
       </header>
       <main className="px-5">
