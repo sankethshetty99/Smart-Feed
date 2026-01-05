@@ -108,6 +108,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(user: typeof users.$inferInsert): Promise<User> {
+    const [existing] = await db.select().from(users).where(eq(users.username, user.username));
+    if (existing) {
+      return existing;
+    }
     const [newUser] = await db.insert(users).values(user).returning();
     return newUser;
   }
@@ -123,11 +127,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUserInterest(interest: typeof userInterests.$inferInsert): Promise<UserInterest> {
+    const existing = await db.select().from(userInterests)
+      .where(eq(userInterests.userId, interest.userId))
+      .then(items => items.find(i => i.ticker === interest.ticker));
+    if (existing) {
+      return existing;
+    }
     const [newInterest] = await db.insert(userInterests).values(interest).returning();
     return newInterest;
   }
 
   async createFeedItem(item: typeof feedItems.$inferInsert): Promise<FeedItem> {
+    const existing = await db.select().from(feedItems)
+      .where(eq(feedItems.ticker, item.ticker))
+      .then(items => items.find(i => i.summaryHeadline === item.summaryHeadline));
+    if (existing) {
+      return existing;
+    }
     const [newItem] = await db.insert(feedItems).values(item).returning();
     return newItem;
   }
