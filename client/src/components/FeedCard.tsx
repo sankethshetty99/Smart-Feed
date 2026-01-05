@@ -1,4 +1,5 @@
 import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from "lucide-react";
+import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import type { z } from "zod";
 import type { api } from "@shared/routes";
@@ -94,9 +95,10 @@ export function FeedCard({ item }: FeedCardProps) {
         {affectedStocks.map((stock) => {
           const isUp = stock.change >= 0;
           return (
-            <div 
+            <Link 
               key={stock.ticker}
-              className="flex items-center text-sm"
+              href={`/stocks/${stock.ticker}`}
+              className="flex items-center text-sm hover:opacity-70 transition-opacity"
               data-testid={`badge-ticker-${stock.ticker}`}
             >
               <span className="font-bold text-foreground mr-1.5">{stock.ticker}</span>
@@ -111,7 +113,7 @@ export function FeedCard({ item }: FeedCardProps) {
                 )}
                 {Math.abs(stock.change).toFixed(2)}%
               </span>
-            </div>
+            </Link>
           );
         })}
       </div>

@@ -6,12 +6,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Feed from "@/pages/Feed";
 import Search from "@/pages/Search";
 import Profile from "@/pages/Profile";
+import StockDetail from "@/pages/StockDetail";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Feed} />
+      <Route path="/stocks/:ticker" component={StockDetail} />
       <Route path="/search" component={Search} />
       <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
