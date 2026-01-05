@@ -195,15 +195,8 @@ export default function NewsDetail() {
                     </p>
                   </div>
                   
-                  <div className="mx-4">
+                  <div>
                     <MiniStockChart isPositive={isUp} seed={newsId + index} />
-                  </div>
-                  
-                  <div className={cn(
-                    "px-4 py-2 rounded-md font-bold text-white min-w-[90px] text-center",
-                    isUp ? "bg-rh-green" : "bg-rh-red"
-                  )} data-testid={`badge-price-${stock.ticker}`}>
-                    ${stock.price.toFixed(2)}
                   </div>
                 </Link>
               );
