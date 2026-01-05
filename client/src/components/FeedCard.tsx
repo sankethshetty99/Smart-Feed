@@ -61,37 +61,23 @@ export function FeedCard({ item }: FeedCardProps) {
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-border/30">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className={cn(
-              "w-8 h-8 rounded-lg flex items-center justify-center font-bold text-[10px] shadow-sm",
-              isPositive ? "bg-rh-green-subtle text-rh-green" : "bg-rh-red-subtle text-rh-red"
-            )}>
-              {item.ticker}
-            </div>
-            <div>
-              <p className="text-xs font-bold text-foreground leading-none mb-1">
-                {item.ticker}
-              </p>
-              <p className="text-[10px] text-muted-foreground font-medium truncate max-w-[150px]">
-                {item.stock.companyName}
-              </p>
-            </div>
-          </div>
-          
-          <div className="text-right">
-            <div className="font-mono font-bold text-xs">
-              ${item.stock.currentPrice.toFixed(2)}
-            </div>
-            <div className={cn(
-              "flex items-center justify-end text-[10px] font-bold mt-0.5",
-              isPositive ? "text-rh-green" : "text-rh-red"
-            )}>
-              {isPositive ? <ArrowUpRight className="w-2 h-2 mr-0.5" /> : <ArrowDownRight className="w-2 h-2 mr-0.5" />}
-              {Math.abs(item.stock.dayChangePercent).toFixed(2)}%
-            </div>
-          </div>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <div 
+          className="flex items-center text-sm"
+          data-testid={`badge-ticker-${item.ticker}`}
+        >
+          <span className="font-bold text-foreground mr-1.5">{item.ticker}</span>
+          <span className={cn(
+            "flex items-center font-medium",
+            isPositive ? "text-rh-green" : "text-rh-red"
+          )}>
+            {isPositive ? (
+              <ArrowUpRight className="w-3 h-3 mr-0.5" />
+            ) : (
+              <ArrowDownRight className="w-3 h-3 mr-0.5" />
+            )}
+            {Math.abs(item.stock.dayChangePercent).toFixed(2)}%
+          </span>
         </div>
       </div>
     </div>
