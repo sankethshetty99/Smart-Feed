@@ -54,10 +54,10 @@ async function seed() {
         interestType: "watchlist"
     });
 
-    // 4. Feed Items
+    // 4. Feed Items - AI-styled event-focused headlines
     await storage.createFeedItem({
         ticker: "TSLA",
-        summaryHeadline: "Tesla beats delivery estimates in Q4, signaling strong EV demand.",
+        summaryHeadline: "Q4 EV Deliveries Surge Past Analyst Expectations Amid Global Demand Spike",
         sentimentScore: 0.85,
         sourceCount: 12,
         primarySourceName: "Bloomberg",
@@ -66,7 +66,7 @@ async function seed() {
 
     await storage.createFeedItem({
         ticker: "NVDA",
-        summaryHeadline: "NVIDIA faces new export restrictions, causing slight market jitter.",
+        summaryHeadline: "New Export Controls Spark Uncertainty in Semiconductor Supply Chains",
         sentimentScore: -0.4,
         sourceCount: 8,
         primarySourceName: "Reuters",
@@ -75,7 +75,7 @@ async function seed() {
 
     await storage.createFeedItem({
         ticker: "AAPL",
-        summaryHeadline: "Apple Vision Pro initial reviews are mixed, focusing on weight and battery.",
+        summaryHeadline: "Mixed Reception for Next-Gen Wearables Signals Evolving Consumer Preferences",
         sentimentScore: 0.1,
         sourceCount: 25,
         primarySourceName: "The Verge",
