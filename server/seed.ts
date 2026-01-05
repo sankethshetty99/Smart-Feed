@@ -1,47 +1,15 @@
-import type { Express } from "express";
-import type { Server } from "http";
 import { storage } from "./storage";
-import { api } from "@shared/routes";
-import { z } from "zod";
 
-export async function registerRoutes(
-  httpServer: Server,
-  app: Express
-): Promise<Server> {
-  
-  app.get(api.feed.get.path, async (req, res) => {
-    const userId = Number(req.params.userId);
-    if (isNaN(userId)) {
-        return res.status(400).json({ message: "Invalid user ID" });
+async function seed() {
+    console.log("Seeding database...");
+    
+    // Check if user exists
+    const users = await storage.getUsers();
+    if (users.length > 0) {
+        console.log("Database already seeded");
+        process.exit(0);
     }
-    const feed = await storage.getSmartFeed(userId);
-    res.json(feed);
-  });
 
-  app.get(api.users.get.path, async (req, res) => {
-    const userId = Number(req.params.id);
-    const user = await storage.getUser(userId);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-    res.json(user);
-  });
-  
-  app.get(api.users.list.path, async (req, res) => {
-      const users = await storage.getUsers();
-      res.json(users);
-  });
-
-  // Seed Data Endpoint (for convenience in prototype)
-  app.post("/api/seed", async (req, res) => {
-      await seedDatabase();
-      res.json({ message: "Database seeded" });
-  });
-
-  return httpServer;
-}
-
-async function seedDatabase() {
     // 1. Create Users
     const user = await storage.createUser({
         username: "casual_trader_42",
@@ -113,4 +81,11 @@ async function seedDatabase() {
         primarySourceName: "The Verge",
         publishedAt: new Date(Date.now() - 7200000) // 2 hours ago
     });
+    console.log("Seeding complete!");
+    process.exit(0);
 }
+
+seed().catch((err) => {
+    console.error("Seeding failed:", err);
+    process.exit(1);
+});
