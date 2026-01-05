@@ -3,7 +3,6 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Home from "@/pages/Home";
 import Feed from "@/pages/Feed";
 import Watchlist from "@/pages/Watchlist";
 import Profile from "@/pages/Profile";
@@ -12,8 +11,7 @@ import NotFound from "@/pages/not-found";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/smart-feed" component={Feed} />
+      <Route path="/" component={Feed} />
       <Route path="/watchlist" component={Watchlist} />
       <Route path="/profile" component={Profile} />
       <Route component={NotFound} />

@@ -1,14 +1,14 @@
 import { Link, useLocation } from "wouter";
-import { Home, Eye, User, Sparkles } from "lucide-react";
+import { Compass, Eye, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function BottomNav() {
   const [location] = useLocation();
 
   const navItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/smart-feed", label: "Smart Feed", icon: Sparkles },
+    { href: "/", label: "Feed", icon: Compass },
     { href: "/watchlist", label: "Watchlist", icon: Eye },
+    { href: "/profile", label: "Profile", icon: User },
   ];
 
   return (
