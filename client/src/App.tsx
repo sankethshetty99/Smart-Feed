@@ -8,6 +8,7 @@ import Search from "@/pages/Search";
 import Profile from "@/pages/Profile";
 import StockDetail from "@/pages/StockDetail";
 import NewsDetail from "@/pages/NewsDetail";
+import SourcesDetail from "@/pages/SourcesDetail";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/" component={Feed} />
       <Route path="/stocks/:ticker" component={StockDetail} />
       <Route path="/news/:id" component={NewsDetail} />
+      <Route path="/news/:id/sources" component={SourcesDetail} />
       <Route path="/search" component={Search} />
       <Route path="/profile" component={Profile} />
       <Route component={NotFound} />

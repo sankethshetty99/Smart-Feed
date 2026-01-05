@@ -145,7 +145,11 @@ export default function NewsDetail() {
           {news.summaryHeadline}
         </h2>
 
-        <div className="flex items-center gap-1.5 mb-6">
+        <Link 
+          href={`/news/${newsId}/sources`}
+          className="flex items-center gap-1.5 mb-6 hover:opacity-70 transition-opacity cursor-pointer"
+          data-testid="link-sources"
+        >
           <div className="flex items-center -space-x-2">
             {sources.map((source, i) => (
               <div 
@@ -163,7 +167,7 @@ export default function NewsDetail() {
           <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
             {news.sourceCount}+ Sources
           </span>
-        </div>
+        </Link>
 
         <div className="mb-8">
           <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
