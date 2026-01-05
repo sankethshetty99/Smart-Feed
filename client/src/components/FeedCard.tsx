@@ -33,7 +33,7 @@ export function FeedCard({ item }: FeedCardProps) {
         </h4>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
             <div className="flex items-center -space-x-2">
               {sources.map((source, i) => (
                 <div 
