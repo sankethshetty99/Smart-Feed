@@ -166,9 +166,6 @@ export default function NewsDetail() {
         </div>
 
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Summary
-          </h3>
           <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
             {news.summaryHeadline} Multiple sources are reporting on this development, 
             with analysts indicating a {isBullish ? "positive" : "cautious"} outlook. 
