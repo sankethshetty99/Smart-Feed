@@ -68,36 +68,38 @@ export function FeedCard({ item }: FeedCardProps) {
       data-testid={`card-news-${item.id}`}
     >
       <div className="mb-4">
-        <div className={cn(
-          "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
-          sentimentColor
-        )}>
-          <SentimentIcon className="w-3 h-3 mr-1.5" />
-          {isSentimentPositive ? "Bullish" : "Bearish"}
-        </div>
-        
         <h4 className="text-xl leading-tight tracking-tight mb-3 group-hover:text-primary transition-colors font-semibold">
           {item.summaryHeadline}
         </h4>
         
-        <div className="flex items-center gap-1.5">
-          <div className="flex items-center -space-x-2">
-            {sources.map((source, i) => (
-              <div 
-                key={i} 
-                className={cn(
-                  "w-6 h-6 rounded-full border-2 border-card flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
-                  source.color
-                )}
-                title={source.name}
-              >
-                {source.name[0]}
-              </div>
-            ))}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            <div className="flex items-center -space-x-2">
+              {sources.map((source, i) => (
+                <div 
+                  key={i} 
+                  className={cn(
+                    "w-6 h-6 rounded-full border-2 border-card flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
+                    source.color
+                  )}
+                  title={source.name}
+                >
+                  {source.name[0]}
+                </div>
+              ))}
+            </div>
+            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+              {item.sourceCount}+ Sources
+            </span>
           </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-            {item.sourceCount}+ Sources
-          </span>
+          
+          <div className={cn(
+            "flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary",
+            sentimentColor
+          )}>
+            <SentimentIcon className="w-3 h-3 mr-1.5" />
+            {isSentimentPositive ? "Bullish" : "Bearish"}
+          </div>
         </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-4">
