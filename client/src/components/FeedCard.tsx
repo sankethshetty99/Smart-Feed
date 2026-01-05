@@ -10,20 +10,48 @@ interface FeedCardProps {
   item: FeedItem;
 }
 
+const mockTickers = [
+  { ticker: "AAPL", change: 1.24 },
+  { ticker: "GOOGL", change: -0.87 },
+  { ticker: "MSFT", change: 2.15 },
+  { ticker: "AMZN", change: -1.32 },
+  { ticker: "META", change: 0.95 },
+  { ticker: "NFLX", change: -2.41 },
+  { ticker: "AMD", change: 3.12 },
+  { ticker: "INTC", change: -0.58 },
+];
+
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
 export function FeedCard({ item }: FeedCardProps) {
-  const isPositive = item.stock.dayChangePercent >= 0;
   const isSentimentPositive = item.sentimentScore >= 0;
   
-  // Determine sentiment intensity
   const sentimentColor = isSentimentPositive ? "text-rh-green" : "text-rh-red";
   const SentimentIcon = isSentimentPositive ? TrendingUp : TrendingDown;
   
-  // Mock source logos since we don't have real ones yet
   const sources = [
     { name: "Bloomberg", color: "bg-blue-600" },
     { name: "Reuters", color: "bg-orange-600" },
     { name: "CNBC", color: "bg-indigo-900" }
   ];
+
+  const seed = item.id;
+  const numAdditionalStocks = Math.floor(seededRandom(seed) * 3);
+  
+  const affectedStocks = [
+    { ticker: item.ticker, change: item.stock.dayChangePercent }
+  ];
+  
+  for (let i = 0; i < numAdditionalStocks; i++) {
+    const mockIndex = Math.floor(seededRandom(seed + i + 1) * mockTickers.length);
+    const mock = mockTickers[mockIndex];
+    if (!affectedStocks.find(s => s.ticker === mock.ticker)) {
+      affectedStocks.push(mock);
+    }
+  }
 
   return (
     <div className="group relative bg-card hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99]">
@@ -62,24 +90,30 @@ export function FeedCard({ item }: FeedCardProps) {
           </div>
         </div>
       </div>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <div 
-          className="flex items-center text-sm"
-          data-testid={`badge-ticker-${item.ticker}`}
-        >
-          <span className="font-bold text-foreground mr-1.5">{item.ticker}</span>
-          <span className={cn(
-            "flex items-center font-medium",
-            isPositive ? "text-rh-green" : "text-rh-red"
-          )}>
-            {isPositive ? (
-              <ArrowUpRight className="w-3 h-3 mr-0.5" />
-            ) : (
-              <ArrowDownRight className="w-3 h-3 mr-0.5" />
-            )}
-            {Math.abs(item.stock.dayChangePercent).toFixed(2)}%
-          </span>
-        </div>
+      <div className="mt-4 flex flex-wrap gap-4">
+        {affectedStocks.map((stock) => {
+          const isUp = stock.change >= 0;
+          return (
+            <div 
+              key={stock.ticker}
+              className="flex items-center text-sm"
+              data-testid={`badge-ticker-${stock.ticker}`}
+            >
+              <span className="font-bold text-foreground mr-1.5">{stock.ticker}</span>
+              <span className={cn(
+                "flex items-center font-medium",
+                isUp ? "text-rh-green" : "text-rh-red"
+              )}>
+                {isUp ? (
+                  <ArrowUpRight className="w-3 h-3 mr-0.5" />
+                ) : (
+                  <ArrowDownRight className="w-3 h-3 mr-0.5" />
+                )}
+                {Math.abs(stock.change).toFixed(2)}%
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
