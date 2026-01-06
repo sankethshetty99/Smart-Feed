@@ -59,9 +59,14 @@ export async function registerRoutes(
 async function ensureDatabaseSeeded() {
   try {
     const allFeedItems = await storage.getAllFeedItems();
-    console.log(`Found ${allFeedItems.length} feed items in database`);
-    if (allFeedItems.length < 10) {
-      console.log("Database empty or incomplete, clearing and reseeding...");
+    const users = await storage.getUsers();
+    console.log(`Found ${allFeedItems.length} feed items, ${users.length} users in database`);
+    
+    // Need exactly 13 feed items and 1 user for correct data
+    const needsReseed = allFeedItems.length !== 13 || users.length !== 1;
+    
+    if (needsReseed) {
+      console.log("Database needs reseeding, clearing and reseeding...");
       try {
         await storage.clearAll();
         console.log("Cleared old data");
@@ -71,7 +76,7 @@ async function ensureDatabaseSeeded() {
       await seedDatabase();
       console.log("Database seeded successfully with full data");
     } else {
-      console.log("Database already has sufficient data");
+      console.log("Database already has correct data");
     }
   } catch (error) {
     console.error("Error checking/seeding database:", error);
