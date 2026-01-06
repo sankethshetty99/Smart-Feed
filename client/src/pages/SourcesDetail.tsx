@@ -75,18 +75,19 @@ export default function SourcesDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-8">
-      <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
-        <Button 
-          size="icon" 
-          variant="ghost" 
-          onClick={() => setLocation(`/news/${newsId}`)}
-          data-testid="button-back"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </Button>
-      </header>
+      <div className="max-w-2xl mx-auto">
+        <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
+          <Button 
+            size="icon" 
+            variant="ghost" 
+            onClick={() => setLocation(`/news/${newsId}`)}
+            data-testid="button-back"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
+        </header>
 
-      <main className="px-5">
+        <main className="px-5">
         <h2 className="text-2xl font-bold leading-tight mb-2" data-testid="text-headline">
           Sources
         </h2>
@@ -127,7 +128,8 @@ export default function SourcesDetail() {
             </div>
           ))}
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

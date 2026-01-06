@@ -95,18 +95,19 @@ export default function StockDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <header className="flex items-center justify-start px-4 py-3">
-        <Button 
-          size="icon" 
-          variant="ghost" 
-          onClick={() => setLocation("/")}
-          data-testid="button-back"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </Button>
-      </header>
+      <div className="max-w-2xl mx-auto">
+        <header className="flex items-center justify-start px-4 py-3">
+          <Button 
+            size="icon" 
+            variant="ghost" 
+            onClick={() => setLocation("/")}
+            data-testid="button-back"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
+        </header>
 
-      <main className="px-5">
+        <main className="px-5">
         <p className="text-sm text-muted-foreground font-medium mb-1" data-testid="text-ticker">
           {stock.ticker}
         </p>
@@ -178,10 +179,11 @@ export default function StockDetail() {
             <ArrowUpRight className="w-5 h-5 ml-1" />
           </button>
         </div>
-      </main>
+        </main>
+      </div>
 
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/40 px-5 py-4">
-        <div className="flex items-center justify-between max-w-md mx-auto">
+        <div className="flex items-center justify-between max-w-2xl mx-auto">
           <button className="flex items-center gap-2 text-foreground font-medium" data-testid="button-individual">
             <TrendingUp className="w-5 h-5" />
             Individual

@@ -90,7 +90,7 @@ export default function NewsDetail() {
           <div className="w-9" />
           <h1 className="text-sm font-medium text-muted-foreground">News</h1>
           <Button size="icon" variant="ghost" onClick={() => setLocation("/")} data-testid="button-back">
-            <ArrowLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5" />
           </Button>
         </header>
         <div className="px-5 py-8 text-center text-muted-foreground">
@@ -122,17 +122,18 @@ export default function NewsDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-8">
-      <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
-        <Button 
-          size="icon" 
-          variant="ghost" 
-          onClick={() => setLocation("/")}
-          data-testid="button-back"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </Button>
-      </header>
-      <main className="px-5">
+      <div className="max-w-2xl mx-auto">
+        <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
+          <Button 
+            size="icon" 
+            variant="ghost" 
+            onClick={() => setLocation("/")}
+            data-testid="button-back"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
+        </header>
+        <main className="px-5">
         <div className={cn(
           "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
           isBullish ? "text-rh-green" : "text-rh-red"
@@ -207,7 +208,8 @@ export default function NewsDetail() {
             })}
           </div>
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

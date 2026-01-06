@@ -38,8 +38,8 @@ export default function Feed() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <main className="max-w-md mx-auto pt-10">
-        <div className="px-5 mb-6">
+      <main className="max-w-2xl mx-auto pt-10 px-4 sm:px-6">
+        <div className="mb-6">
           <h1 className="text-3xl tracking-tight font-semibold">Smart Feed</h1>
         </div>
 
