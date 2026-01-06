@@ -94,8 +94,8 @@ export default function StockDetail() {
   const isAfterHoursPositive = stock.afterHoursPercent >= 0;
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <div className="max-w-2xl mx-auto">
+    <div className="pb-32">
+      <div className="w-full max-w-2xl mx-auto">
         <header className="flex items-center justify-start px-4 py-3">
           <Button 
             size="icon" 
@@ -149,28 +149,30 @@ export default function StockDetail() {
 
         <MiniChart isPositive={isPositive} />
 
-        <div className="flex items-center gap-2 border-t border-border/40 pt-4">
-          {timeframes.map((tf) => (
+        <div className="overflow-x-auto -mx-5 px-5 border-t border-border/40 pt-4">
+          <div className="flex items-center gap-2 min-w-max">
+            {timeframes.map((tf) => (
+              <button
+                key={tf}
+                onClick={() => setSelectedTimeframe(tf)}
+                className={cn(
+                  "px-3 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap",
+                  selectedTimeframe === tf
+                    ? "bg-rh-green/10 text-rh-green border border-rh-green"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+                data-testid={`button-timeframe-${tf}`}
+              >
+                {tf}
+              </button>
+            ))}
             <button
-              key={tf}
-              onClick={() => setSelectedTimeframe(tf)}
-              className={cn(
-                "px-3 py-1.5 text-xs font-medium rounded-full transition-colors",
-                selectedTimeframe === tf
-                  ? "bg-rh-green/10 text-rh-green border border-rh-green"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-              data-testid={`button-timeframe-${tf}`}
+              className="px-3 py-1.5 text-xs font-medium rounded-full border border-border text-foreground whitespace-nowrap"
+              data-testid="button-advanced"
             >
-              {tf}
+              Advanced
             </button>
-          ))}
-          <button
-            className="px-3 py-1.5 text-xs font-medium rounded-full border border-border text-foreground ml-auto"
-            data-testid="button-advanced"
-          >
-            Advanced
-          </button>
+          </div>
         </div>
 
         <div className="mt-8">

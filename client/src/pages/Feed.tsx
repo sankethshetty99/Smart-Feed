@@ -1,9 +1,7 @@
 import { useFeed } from "@/hooks/use-feed";
 import { useUser } from "@/hooks/use-user";
 import { FeedCard } from "@/components/FeedCard";
-import { Header } from "@/components/Header";
-import { BottomNav } from "@/components/BottomNav";
-import { Loader2, TrendingUp, Wallet, ArrowRight } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Feed() {
@@ -37,10 +35,10 @@ export default function Feed() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <main className="max-w-2xl mx-auto pt-10 px-4 sm:px-6">
+    <div className="pb-20">
+      <main className="w-full max-w-2xl mx-auto pt-8 md:pt-12 px-4 sm:px-6">
         <div className="mb-6">
-          <h1 className="text-3xl tracking-tight font-semibold">Smart Feed</h1>
+          <h1 className="text-2xl md:text-3xl tracking-tight font-semibold">Smart Feed</h1>
         </div>
 
         {/* Feed List */}
@@ -64,7 +62,6 @@ export default function Feed() {
         </div>
         
       </main>
-      <BottomNav />
     </div>
   );
 }

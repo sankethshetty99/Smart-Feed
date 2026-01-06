@@ -121,8 +121,8 @@ export default function NewsDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="pb-20">
+      <div className="w-full max-w-2xl mx-auto">
         <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
           <Button 
             size="icon" 

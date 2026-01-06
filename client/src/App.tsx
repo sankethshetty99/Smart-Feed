@@ -1,8 +1,9 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { BottomNav } from "@/components/BottomNav";
 import Feed from "@/pages/Feed";
 import Search from "@/pages/Search";
 import Profile from "@/pages/Profile";
@@ -25,12 +26,24 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const [location] = useLocation();
+  const hideBottomNav = location.startsWith("/stocks/");
+  
+  return (
+    <div className="min-h-screen bg-background">
+      <Router />
+      {!hideBottomNav && <BottomNav />}
+    </div>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <AppContent />
         <Toaster />
-        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
