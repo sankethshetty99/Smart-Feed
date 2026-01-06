@@ -198,7 +198,7 @@ async function seedDatabase() {
         dayChangePercent: -2.15
     });
 
-    // 3. User Interests
+    // 3. User Interests (only 2 to match development exactly)
     await storage.createUserInterest({
         userId: user.id,
         ticker: "TSLA",
@@ -208,36 +208,6 @@ async function seedDatabase() {
     await storage.createUserInterest({
         userId: user.id,
         ticker: "NVDA",
-        interestType: "watchlist"
-    });
-
-    await storage.createUserInterest({
-        userId: user.id,
-        ticker: "MSFT",
-        interestType: "holding"
-    });
-
-    await storage.createUserInterest({
-        userId: user.id,
-        ticker: "META",
-        interestType: "watchlist"
-    });
-
-    await storage.createUserInterest({
-        userId: user.id,
-        ticker: "JPM",
-        interestType: "holding"
-    });
-
-    await storage.createUserInterest({
-        userId: user.id,
-        ticker: "NFLX",
-        interestType: "watchlist"
-    });
-
-    await storage.createUserInterest({
-        userId: user.id,
-        ticker: "AMD",
         interestType: "watchlist"
     });
 
