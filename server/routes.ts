@@ -190,6 +190,14 @@ async function seedDatabase() {
         dayChangePercent: 2.45
     });
 
+    await storage.createStock({
+        ticker: "BA",
+        companyName: "The Boeing Co.",
+        sector: "Industrials",
+        currentPrice: 198.50,
+        dayChangePercent: -2.15
+    });
+
     // 3. User Interests
     await storage.createUserInterest({
         userId: user.id,
@@ -340,5 +348,14 @@ async function seedDatabase() {
         sourceCount: 10,
         primarySourceName: "Reuters",
         publishedAt: new Date(Date.now() - 39600000)
+    });
+
+    await storage.createFeedItem({
+        ticker: "BA",
+        summaryHeadline: "Aviation Safety Concerns Resurface Following Latest Inspection Reports",
+        sentimentScore: -0.55,
+        sourceCount: 20,
+        primarySourceName: "WSJ",
+        publishedAt: new Date(Date.now() - 43200000)
     });
 }
