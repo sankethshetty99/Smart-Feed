@@ -57,7 +57,12 @@ export async function registerRoutes(
 }
 
 async function ensureDatabaseSeeded() {
+  console.log("Starting database seed check...");
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`DATABASE_URL exists: ${!!process.env.DATABASE_URL}`);
+  
   try {
+    console.log("Attempting to query existing data...");
     const allFeedItems = await storage.getAllFeedItems();
     const users = await storage.getUsers();
     console.log(`Found ${allFeedItems.length} feed items, ${users.length} users in database`);
@@ -75,18 +80,30 @@ async function ensureDatabaseSeeded() {
       }
       await seedDatabase();
       console.log("Database seeded successfully with full data");
+      
+      // Verify the seed worked
+      const verifyFeed = await storage.getAllFeedItems();
+      const verifyUsers = await storage.getUsers();
+      console.log(`After seed: ${verifyFeed.length} feed items, ${verifyUsers.length} users`);
     } else {
       console.log("Database already has correct data");
     }
-  } catch (error) {
-    console.error("Error checking/seeding database:", error);
+  } catch (error: any) {
+    console.error("Error checking/seeding database:", error?.message || error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
+    
     // Try to seed anyway if check failed
     try {
       console.log("Attempting to seed despite error...");
       await seedDatabase();
       console.log("Fallback seed completed");
-    } catch (seedError) {
-      console.error("Fallback seed also failed:", seedError);
+      
+      // Verify
+      const verifyFeed = await storage.getAllFeedItems();
+      console.log(`Fallback seed result: ${verifyFeed.length} feed items`);
+    } catch (seedError: any) {
+      console.error("Fallback seed also failed:", seedError?.message || seedError);
+      console.error("Seed error details:", JSON.stringify(seedError, null, 2));
     }
   }
 }
