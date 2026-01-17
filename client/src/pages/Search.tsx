@@ -3,7 +3,7 @@ import { Search as SearchIcon } from "lucide-react";
 export default function Search() {
   return (
     <div className="pb-20">
-      <main className="w-full max-w-2xl mx-auto pt-8 md:pt-12 px-4 sm:px-6">
+      <main className="w-full max-w-3xl mx-auto pt-6 md:pt-10 px-3 sm:px-4">
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl tracking-tight font-semibold">Search</h1>
         </div>

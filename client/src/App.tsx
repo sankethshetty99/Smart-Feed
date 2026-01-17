@@ -1,5 +1,4 @@
 import { Switch, Route, useLocation } from "wouter";
-import { ThemeProvider } from "@/components/theme-provider";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -12,8 +11,6 @@ import StockDetail from "@/pages/StockDetail";
 import NewsDetail from "@/pages/NewsDetail";
 import SourcesDetail from "@/pages/SourcesDetail";
 import NotFound from "@/pages/not-found";
-
-import { MobileMockup } from "@/components/MobileMockup";
 
 function Router() {
   return (
@@ -32,26 +29,22 @@ function Router() {
 function AppContent() {
   const [location] = useLocation();
   const hideBottomNav = location.startsWith("/stocks/");
-
+  
   return (
-    <MobileMockup>
-      <div className="min-h-full bg-background pb-20"> {/* pb-20 to account for bottom nav */}
-        <Router />
-        {!hideBottomNav && <BottomNav />}
-      </div>
-    </MobileMockup>
+    <div className="min-h-screen bg-background">
+      <Router />
+      {!hideBottomNav && <BottomNav />}
+    </div>
   );
 }
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <TooltipProvider>
-          <AppContent />
-          <Toaster />
-        </TooltipProvider>
-      </ThemeProvider>
+      <TooltipProvider>
+        <AppContent />
+        <Toaster />
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }

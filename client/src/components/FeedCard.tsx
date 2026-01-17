@@ -63,7 +63,7 @@ export function FeedCard({ item }: FeedCardProps) {
 
   return (
     <div 
-      className="group relative bg-card hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99] cursor-pointer"
+      className="group relative hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99] cursor-pointer pl-[4px] pr-[4px] bg-[#000000]"
       onClick={handleCardClick}
       data-testid={`card-news-${item.id}`}
     >

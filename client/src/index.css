@@ -98,8 +98,4 @@
   .bg-rh-red-subtle {
     @apply bg-[hsl(348,83%,47%,0.1)] dark:bg-[hsl(348,90%,60%,0.1)];
   }
-  .bg-dot-pattern {
-    background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
 }

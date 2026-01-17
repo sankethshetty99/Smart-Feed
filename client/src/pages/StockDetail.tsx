@@ -95,7 +95,7 @@ export default function StockDetail() {
 
   return (
     <div className="pb-32">
-      <div className="w-full max-w-2xl mx-auto">
+      <div className="w-full max-w-3xl mx-auto px-3 sm:px-4">
         <header className="flex items-center justify-start px-4 py-3">
           <Button 
             size="icon" 
@@ -185,7 +185,7 @@ export default function StockDetail() {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/40 px-5 py-4">
-        <div className="flex items-center justify-between max-w-2xl mx-auto">
+        <div className="flex items-center justify-between max-w-3xl mx-auto px-3 sm:px-4">
           <button className="flex items-center gap-2 text-foreground font-medium" data-testid="button-individual">
             <TrendingUp className="w-5 h-5" />
             Individual

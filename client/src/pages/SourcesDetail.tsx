@@ -75,7 +75,7 @@ export default function SourcesDetail() {
 
   return (
     <div className="pb-20">
-      <div className="w-full max-w-2xl mx-auto">
+      <div className="w-full max-w-3xl mx-auto px-3 sm:px-4">
         <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
           <Button 
             size="icon" 
