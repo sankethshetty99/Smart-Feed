@@ -5,90 +5,90 @@ import { api } from "@shared/routes";
 import { z } from "zod";
 
 export async function registerRoutes(
-  httpServer: Server,
-  app: Express
+    httpServer: Server,
+    app: Express
 ): Promise<Server> {
-  
-  // Auto-seed database on startup if empty
-  await ensureDatabaseSeeded();
-  
-  app.get(api.feed.get.path, async (req, res) => {
-    const userId = Number(req.params.userId);
-    if (isNaN(userId)) {
-        return res.status(400).json({ message: "Invalid user ID" });
-    }
-    const feed = await storage.getSmartFeed(userId);
-    res.json(feed);
-  });
 
-  app.get(api.news.get.path, async (req, res) => {
-    const id = Number(req.params.id);
-    if (isNaN(id)) {
-        return res.status(400).json({ message: "Invalid news ID" });
-    }
-    const item = await storage.getFeedItem(id);
-    if (!item) {
-        return res.status(404).json({ message: "News item not found" });
-    }
-    res.json(item);
-  });
+    // Auto-seed database on startup if empty
+    await ensureDatabaseSeeded();
 
-  app.get(api.users.get.path, async (req, res) => {
-    const userId = Number(req.params.id);
-    const user = await storage.getUser(userId);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-    res.json(user);
-  });
-  
-  app.get(api.users.list.path, async (req, res) => {
-      const users = await storage.getUsers();
-      res.json(users);
-  });
+    app.get(api.feed.get.path, async (req, res) => {
+        const userId = Number(req.params.userId);
+        if (isNaN(userId)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
+        const feed = await storage.getSmartFeed(userId);
+        res.json(feed);
+    });
 
-  // Seed Data Endpoint (for convenience in prototype)
-  app.post("/api/seed", async (req, res) => {
-      await seedDatabase();
-      res.json({ message: "Database seeded" });
-  });
+    app.get(api.news.get.path, async (req, res) => {
+        const id = Number(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ message: "Invalid news ID" });
+        }
+        const item = await storage.getFeedItem(id);
+        if (!item) {
+            return res.status(404).json({ message: "News item not found" });
+        }
+        res.json(item);
+    });
 
-  return httpServer;
+    app.get(api.users.get.path, async (req, res) => {
+        const userId = Number(req.params.id);
+        const user = await storage.getUser(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    });
+
+    app.get(api.users.list.path, async (req, res) => {
+        const users = await storage.getUsers();
+        res.json(users);
+    });
+
+    // Seed Data Endpoint (for convenience in prototype)
+    app.post("/api/seed", async (req, res) => {
+        await seedDatabase();
+        res.json({ message: "Database seeded" });
+    });
+
+    return httpServer;
 }
 
 async function ensureDatabaseSeeded() {
-  try {
-    const allFeedItems = await storage.getAllFeedItems();
-    const users = await storage.getUsers();
-    console.log(`Found ${allFeedItems.length} feed items, ${users.length} users in database`);
-    
-    // Need exactly 13 feed items and 1 user for correct data
-    const needsReseed = allFeedItems.length !== 13 || users.length !== 1;
-    
-    if (needsReseed) {
-      console.log("Database needs reseeding, clearing and reseeding...");
-      try {
-        await storage.clearAll();
-        console.log("Cleared old data");
-      } catch (clearError) {
-        console.log("Clear failed (may be empty), proceeding with seed...");
-      }
-      await seedDatabase();
-      console.log("Database seeded successfully with full data");
-    } else {
-      console.log("Database already has correct data");
-    }
-  } catch (error) {
-    console.error("Error checking/seeding database:", error);
-    // Try to seed anyway if check failed
     try {
-      console.log("Attempting to seed despite error...");
-      await seedDatabase();
-      console.log("Fallback seed completed");
-    } catch (seedError) {
-      console.error("Fallback seed also failed:", seedError);
+        const allFeedItems = await storage.getAllFeedItems();
+        const users = await storage.getUsers();
+        console.log(`Found ${allFeedItems.length} feed items, ${users.length} users in database`);
+
+        // Need exactly 16 feed items and 1 user for correct data
+        const needsReseed = allFeedItems.length !== 16 || users.length !== 1;
+
+        if (needsReseed) {
+            console.log("Database needs reseeding, clearing and reseeding...");
+            try {
+                await storage.clearAll();
+                console.log("Cleared old data");
+            } catch (clearError) {
+                console.log("Clear failed (may be empty), proceeding with seed...");
+            }
+            await seedDatabase();
+            console.log("Database seeded successfully with full data");
+        } else {
+            console.log("Database already has correct data");
+        }
+    } catch (error) {
+        console.error("Error checking/seeding database:", error);
+        // Try to seed anyway if check failed
+        try {
+            console.log("Attempting to seed despite error...");
+            await seedDatabase();
+            console.log("Fallback seed completed");
+        } catch (seedError) {
+            console.error("Fallback seed also failed:", seedError);
+        }
     }
-  }
 }
 
 async function seedDatabase() {
@@ -209,7 +209,7 @@ async function seedDatabase() {
         ticker: "TSLA",
         interestType: "holding"
     });
-    
+
     await storage.createUserInterest({
         userId: user.id,
         ticker: "NVDA",
@@ -332,5 +332,33 @@ async function seedDatabase() {
         sourceCount: 20,
         primarySourceName: "WSJ",
         publishedAt: new Date(Date.now() - 43200000)
+    });
+
+    // 5. General World Events (No Specific Ticker)
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "Global Markets Rally as Inflation Data Shows Cooling Trend",
+        sentimentScore: 0.75,
+        sourceCount: 30,
+        primarySourceName: "Financial Times",
+        publishedAt: new Date(Date.now() - 1000000)
+    });
+
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "New International Trade Agreements Boost Cross-Border Commerce Outlook",
+        sentimentScore: 0.60,
+        sourceCount: 15,
+        primarySourceName: "Reuters",
+        publishedAt: new Date(Date.now() - 5000000)
+    });
+
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "Tech Sector Regulations Tighten Across Major Economies",
+        sentimentScore: -0.35,
+        sourceCount: 22,
+        primarySourceName: "WSJ",
+        publishedAt: new Date(Date.now() - 8000000)
     });
 }

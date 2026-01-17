@@ -20,7 +20,7 @@
   --popover-foreground: 0 0% 0%;
 
   /* Robinhood Green */
-  --primary: 147 50% 47%; 
+  --primary: 147 50% 47%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 0 0% 96%;
@@ -32,7 +32,8 @@
   --accent: 147 50% 47%;
   --accent-foreground: 0 0% 100%;
 
-  --destructive: 348 83% 47%; /* Robinhood Red */
+  --destructive: 348 83% 47%;
+  /* Robinhood Red */
   --destructive-foreground: 0 0% 100%;
 
   --border: 0 0% 90%;
@@ -53,7 +54,8 @@
   --popover: 0 0% 10%;
   --popover-foreground: 0 0% 100%;
 
-  --primary: 147 60% 50%; /* Brighter Green */
+  --primary: 147 60% 50%;
+  /* Brighter Green */
   --primary-foreground: 0 0% 0%;
 
   --secondary: 0 0% 15%;
@@ -65,7 +67,8 @@
   --accent: 147 60% 50%;
   --accent-foreground: 0 0% 0%;
 
-  --destructive: 348 90% 60%; /* Brighter Red */
+  --destructive: 348 90% 60%;
+  /* Brighter Red */
   --destructive-foreground: 0 0% 0%;
 
   --border: 0 0% 20%;
@@ -79,7 +82,12 @@
     font-family: var(--font-sans);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     @apply font-bold tracking-tight;
   }
@@ -87,15 +95,50 @@
 
 @layer utilities {
   .text-rh-green {
-    @apply text-[hsl(147,50%,47%)] dark:text-[hsl(147,60%,50%)];
+    color: hsl(147, 50%, 47%);
   }
+
+  .dark .text-rh-green {
+    color: hsl(147, 60%, 50%);
+  }
+
   .text-rh-red {
-    @apply text-[hsl(348,83%,47%)] dark:text-[hsl(348,90%,60%)];
+    color: hsl(348, 83%, 47%);
   }
+
+  .dark .text-rh-red {
+    color: hsl(348, 90%, 60%);
+  }
+
+  .text-rh-pink {
+    color: #FF6B8A;
+  }
+
+  .bg-rh-pink {
+    background-color: #FF6B8A;
+  }
+
+  .bg-rh-green {
+    background-color: hsl(147, 50%, 47%);
+  }
+
+  .dark .bg-rh-green {
+    background-color: hsl(147, 60%, 50%);
+  }
+
   .bg-rh-green-subtle {
-    @apply bg-[hsl(147,50%,47%,0.1)] dark:bg-[hsl(147,60%,50%,0.1)];
+    background-color: hsla(147, 50%, 47%, 0.1);
   }
+
+  .dark .bg-rh-green-subtle {
+    background-color: hsla(147, 60%, 50%, 0.1);
+  }
+
   .bg-rh-red-subtle {
-    @apply bg-[hsl(348,83%,47%,0.1)] dark:bg-[hsl(348,90%,60%,0.1)];
+    background-color: hsla(348, 83%, 47%, 0.1);
+  }
+
+  .dark .bg-rh-red-subtle {
+    background-color: hsla(348, 90%, 60%, 0.1);
   }
 }

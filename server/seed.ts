@@ -2,7 +2,7 @@ import { storage } from "./storage";
 
 async function seed() {
     console.log("Seeding database...");
-    
+
     // Check if user exists
     const users = await storage.getUsers();
     if (users.length > 0) {
@@ -47,7 +47,7 @@ async function seed() {
         ticker: "TSLA",
         interestType: "holding"
     });
-    
+
     await storage.createUserInterest({
         userId: user.id,
         ticker: "NVDA",
@@ -80,6 +80,34 @@ async function seed() {
         sourceCount: 25,
         primarySourceName: "The Verge",
         publishedAt: new Date(Date.now() - 7200000) // 2 hours ago
+    });
+
+    // 5. General World Events (No Specific Ticker)
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "Global Markets Rally as Inflation Data Shows Cooling Trend",
+        sentimentScore: 0.75,
+        sourceCount: 30,
+        primarySourceName: "Financial Times",
+        publishedAt: new Date(Date.now() - 1000000)
+    });
+
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "New International Trade Agreements Boost Cross-Border Commerce Outlook",
+        sentimentScore: 0.60,
+        sourceCount: 15,
+        primarySourceName: "Reuters",
+        publishedAt: new Date(Date.now() - 5000000)
+    });
+
+    await storage.createFeedItem({
+        ticker: null,
+        summaryHeadline: "Tech Sector Regulations Tighten Across Major Economies",
+        sentimentScore: -0.35,
+        sourceCount: 22,
+        primarySourceName: "WSJ",
+        publishedAt: new Date(Date.now() - 8000000)
     });
     console.log("Seeding complete!");
     process.exit(0);

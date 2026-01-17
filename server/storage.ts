@@ -3,13 +3,13 @@ import {
   users, stocks, userInterests, feedItems,
   type User, type Stock, type UserInterest, type FeedItem
 } from "@shared/schema";
-import { eq, inArray, desc, gt } from "drizzle-orm";
+import { eq, inArray, desc, gt, isNull, or } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUsers(): Promise<User[]>;
-  getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock })[]>;
-  getFeedItem(id: number): Promise<(FeedItem & { stock: Stock }) | undefined>;
+  getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock | null })[]>;
+  getFeedItem(id: number): Promise<(FeedItem & { stock: Stock | null }) | undefined>;
   getAllFeedItems(): Promise<FeedItem[]>;
   clearAll(): Promise<void>;
   // Seeding methods
@@ -26,70 +26,73 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUsers(): Promise<User[]> {
-      return await db.select().from(users);
+    return await db.select().from(users);
   }
 
-  async getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock })[]> {
+  async getSmartFeed(userId: number): Promise<(FeedItem & { stock: Stock | null })[]> {
     // 1. Fetch user_interests
     const interests = await db.select().from(userInterests).where(eq(userInterests.userId, userId));
     const interestedTickers = interests.map(i => i.ticker);
 
-    let items: (FeedItem & { stock: Stock })[] = [];
+    let items: (FeedItem & { stock: Stock | null })[] = [];
 
-    if (interestedTickers.length > 0) {
-      // 2. Query feed_items where ticker matches interests
-      const interestItems = await db
-        .select({
-            id: feedItems.id,
-            ticker: feedItems.ticker,
-            summaryHeadline: feedItems.summaryHeadline,
-            sentimentScore: feedItems.sentimentScore,
-            sourceCount: feedItems.sourceCount,
-            primarySourceName: feedItems.primarySourceName,
-            publishedAt: feedItems.publishedAt,
-            stock: stocks
-        })
-        .from(feedItems)
-        .innerJoin(stocks, eq(feedItems.ticker, stocks.ticker))
-        .where(inArray(feedItems.ticker, interestedTickers))
-        .orderBy(desc(feedItems.publishedAt));
-      
-      items = interestItems;
-    }
+    // 2. Query feed_items: either matching interests OR general news (null ticker)
+    // We use leftJoin so stock can be null
+    const whereClause = interestedTickers.length > 0
+      ? or(inArray(feedItems.ticker, interestedTickers), isNull(feedItems.ticker))
+      : isNull(feedItems.ticker);
+
+    const feedResults = await db
+      .select({
+        id: feedItems.id,
+        ticker: feedItems.ticker,
+        summaryHeadline: feedItems.summaryHeadline,
+        sentimentScore: feedItems.sentimentScore,
+        sourceCount: feedItems.sourceCount,
+        primarySourceName: feedItems.primarySourceName,
+        publishedAt: feedItems.publishedAt,
+        stock: stocks
+      })
+      .from(feedItems)
+      .leftJoin(stocks, eq(feedItems.ticker, stocks.ticker))
+      .where(whereClause)
+      .orderBy(desc(feedItems.publishedAt));
+
+    items = feedResults;
 
     // 4. Fallback: If < 5 items, append 'Trending' items (high sentiment score)
     if (items.length < 5) {
       const trendingItems = await db
         .select({
-            id: feedItems.id,
-            ticker: feedItems.ticker,
-            summaryHeadline: feedItems.summaryHeadline,
-            sentimentScore: feedItems.sentimentScore,
-            sourceCount: feedItems.sourceCount,
-            primarySourceName: feedItems.primarySourceName,
-            publishedAt: feedItems.publishedAt,
-            stock: stocks
+          id: feedItems.id,
+          ticker: feedItems.ticker,
+          summaryHeadline: feedItems.summaryHeadline,
+          sentimentScore: feedItems.sentimentScore,
+          sourceCount: feedItems.sourceCount,
+          primarySourceName: feedItems.primarySourceName,
+          publishedAt: feedItems.publishedAt,
+          stock: stocks
         })
         .from(feedItems)
-        .innerJoin(stocks, eq(feedItems.ticker, stocks.ticker))
+        .leftJoin(stocks, eq(feedItems.ticker, stocks.ticker))
         .where(gt(feedItems.sentimentScore, 0.5)) // Simple trending logic
         .orderBy(desc(feedItems.publishedAt))
         .limit(10); // Limit to avoid too many
 
-       // Merge avoiding duplicates
-       const existingIds = new Set(items.map(i => i.id));
-       for (const item of trendingItems) {
-           if (!existingIds.has(item.id)) {
-               items.push(item);
-               existingIds.add(item.id);
-           }
-       }
+      // Merge avoiding duplicates
+      const existingIds = new Set(items.map(i => i.id));
+      for (const item of trendingItems) {
+        if (!existingIds.has(item.id)) {
+          items.push(item);
+          existingIds.add(item.id);
+        }
+      }
     }
 
     return items;
   }
 
-  async getFeedItem(id: number): Promise<(FeedItem & { stock: Stock }) | undefined> {
+  async getFeedItem(id: number): Promise<(FeedItem & { stock: Stock | null }) | undefined> {
     const [item] = await db
       .select({
         id: feedItems.id,
@@ -102,7 +105,7 @@ export class DatabaseStorage implements IStorage {
         stock: stocks
       })
       .from(feedItems)
-      .innerJoin(stocks, eq(feedItems.ticker, stocks.ticker))
+      .leftJoin(stocks, eq(feedItems.ticker, stocks.ticker))
       .where(eq(feedItems.id, id));
     return item;
   }
@@ -119,9 +122,9 @@ export class DatabaseStorage implements IStorage {
   async createStock(stock: typeof stocks.$inferInsert): Promise<Stock> {
     const [newStock] = await db.insert(stocks).values(stock).onConflictDoNothing().returning();
     if (!newStock) {
-        // Return existing if conflict
-        const [existing] = await db.select().from(stocks).where(eq(stocks.ticker, stock.ticker));
-        return existing;
+      // Return existing if conflict
+      const [existing] = await db.select().from(stocks).where(eq(stocks.ticker, stock.ticker));
+      return existing;
     }
     return newStock;
   }
@@ -138,8 +141,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createFeedItem(item: typeof feedItems.$inferInsert): Promise<FeedItem> {
+    const tickerCheck = item.ticker
+      ? eq(feedItems.ticker, item.ticker)
+      : isNull(feedItems.ticker);
+
     const existing = await db.select().from(feedItems)
-      .where(eq(feedItems.ticker, item.ticker))
+      .where(tickerCheck)
       .then(items => items.find(i => i.summaryHeadline === item.summaryHeadline));
     if (existing) {
       return existing;

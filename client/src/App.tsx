@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BottomNav } from "@/components/BottomNav";
+import { MockupContainer } from "@/components/MockupContainer";
 import Feed from "@/pages/Feed";
 import Search from "@/pages/Search";
 import Profile from "@/pages/Profile";
@@ -29,10 +30,12 @@ function Router() {
 function AppContent() {
   const [location] = useLocation();
   const hideBottomNav = location.startsWith("/stocks/");
-  
+
   return (
-    <div className="min-h-screen bg-background">
-      <Router />
+    <div className="h-full bg-background flex flex-col">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-16">
+        <Router />
+      </div>
       {!hideBottomNav && <BottomNav />}
     </div>
   );
@@ -42,7 +45,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AppContent />
+        <MockupContainer>
+          <AppContent />
+        </MockupContainer>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
@@ -50,3 +55,4 @@ function App() {
 }
 
 export default App;
+

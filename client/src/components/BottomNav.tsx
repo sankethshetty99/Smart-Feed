@@ -12,27 +12,27 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 border-t border-border bg-background/95 backdrop-blur-md pb-safe z-50">
+    <nav className="border-t border-border bg-background/95 backdrop-blur-md pb-safe shrink-0">
       <div className="flex justify-around items-center h-16 max-w-2xl mx-auto px-4">
         {navItems.map((item) => {
           const isActive = location === item.href;
           const Icon = item.icon;
-          
+
           return (
             <Link key={item.href} href={item.href} className="flex-1">
-              <div 
+              <div
                 className={cn(
                   "flex flex-col items-center justify-center py-2 px-1 cursor-pointer transition-colors duration-200",
-                  isActive 
-                    ? "text-primary" 
+                  isActive
+                    ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Icon 
+                <Icon
                   className={cn(
                     "w-6 h-6 mb-1 transition-transform duration-200",
                     isActive && "scale-110"
-                  )} 
+                  )}
                   strokeWidth={isActive ? 2.5 : 2}
                 />
                 <span className="text-[10px] font-medium tracking-wide">

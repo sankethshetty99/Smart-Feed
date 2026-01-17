@@ -26,7 +26,7 @@ export const userInterests = pgTable("user_interests", {
 
 export const feedItems = pgTable("feed_items", {
   id: serial("id").primaryKey(),
-  ticker: text("ticker").notNull(),
+  ticker: text("ticker"),
   summaryHeadline: text("summary_headline").notNull(),
   sentimentScore: real("sentiment_score").notNull(), // -1.0 to 1.0
   sourceCount: integer("source_count").notNull(),
