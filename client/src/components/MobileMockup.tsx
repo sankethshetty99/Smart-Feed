@@ -32,7 +32,7 @@ export function MobileMockup({ children }: MobileMockupProps) {
                 {/* Outer Frame */}
                 <div
                     ref={mockupRef}
-                    className="relative w-[375px] h-[812px] bg-background rounded-[40px] shadow-2xl border-[12px] border-gray-900 overflow-hidden ring-1 ring-black/5"
+                    className="relative w-[375px] h-[812px] bg-background rounded-[40px] shadow-2xl border-[12px] border-gray-900 overflow-hidden ring-1 ring-black/5 transform-gpu"
                 >
                     {/* Notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[34px] bg-gray-900 rounded-b-[24px] z-50 pointer-events-none flex items-center justify-center">
