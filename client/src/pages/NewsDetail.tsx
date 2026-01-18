@@ -40,7 +40,7 @@ function generateChartData(isPositive: boolean, seed: number) {
 function MiniStockChart({ isPositive, seed }: { isPositive: boolean; seed: number }) {
   const data = generateChartData(isPositive, seed);
   const color = isPositive ? "#00C805" : "#FF5000";
-  
+
   const pathD = data.map((val, i) => {
     const x = (i / (data.length - 1)) * 100;
     const y = 100 - val;
@@ -102,14 +102,16 @@ export default function NewsDetail() {
 
   const isBullish = news.sentimentScore >= 0;
 
-  const affectedStocks = [
-    { 
-      ticker: news.ticker, 
-      companyName: news.stock.companyName, 
-      price: news.stock.currentPrice, 
-      change: news.stock.dayChangePercent 
-    }
-  ];
+  const affectedStocks = [];
+
+  if (news.ticker && news.stock) {
+    affectedStocks.push({
+      ticker: news.ticker,
+      companyName: news.stock.companyName,
+      price: news.stock.currentPrice,
+      change: news.stock.dayChangePercent
+    });
+  }
 
   const numAdditional = Math.floor(seededRandom(newsId) * 3) + 1;
   for (let i = 0; i < numAdditional; i++) {
@@ -124,9 +126,9 @@ export default function NewsDetail() {
     <div className="pb-20">
       <div className="w-full max-w-3xl mx-auto px-3 sm:px-4">
         <header className="flex items-center justify-start px-4 py-3 sticky top-0 bg-background z-50">
-          <Button 
-            size="icon" 
-            variant="ghost" 
+          <Button
+            size="icon"
+            variant="ghost"
             onClick={() => setLocation("/")}
             data-testid="button-back"
           >
@@ -134,80 +136,80 @@ export default function NewsDetail() {
           </Button>
         </header>
         <main className="px-5">
-        <div className={cn(
-          "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
-          isBullish ? "text-rh-green" : "text-rh-red"
-        )}>
-          {isBullish ? <TrendingUp className="w-3 h-3 mr-1.5" /> : <TrendingDown className="w-3 h-3 mr-1.5" />}
-          {isBullish ? "Bullish" : "Bearish"}
-        </div>
-
-        <h2 className="text-2xl font-bold leading-tight mb-4" data-testid="text-headline">
-          {news.summaryHeadline}
-        </h2>
-
-        <Link 
-          href={`/news/${newsId}/sources`}
-          className="flex items-center gap-1.5 mb-6 hover:opacity-70 transition-opacity cursor-pointer"
-          data-testid="link-sources"
-        >
-          <div className="flex items-center -space-x-2">
-            {sources.map((source, i) => (
-              <div 
-                key={i} 
-                className={cn(
-                  "w-6 h-6 rounded-full border-2 border-background flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
-                  source.color
-                )}
-                title={source.name}
-              >
-                {source.name[0]}
-              </div>
-            ))}
+          <div className={cn(
+            "inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary mb-3",
+            isBullish ? "text-rh-green" : "text-rh-red"
+          )}>
+            {isBullish ? <TrendingUp className="w-3 h-3 mr-1.5" /> : <TrendingDown className="w-3 h-3 mr-1.5" />}
+            {isBullish ? "Bullish" : "Bearish"}
           </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-            {news.sourceCount}+ Sources
-          </span>
-        </Link>
 
-        <div className="mb-8">
-          <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
-            {news.summaryHeadline} Multiple sources are reporting on this development, 
-            with analysts indicating a {isBullish ? "positive" : "cautious"} outlook. 
-            The market response has been {isBullish ? "favorable" : "mixed"}, 
-            as investors assess the potential implications across the {news.stock.sector} sector and related industries.
-          </p>
-        </div>
+          <h2 className="text-2xl font-bold leading-tight mb-4" data-testid="text-headline">
+            {news.summaryHeadline}
+          </h2>
 
-        <div>
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Relevant Stocks</h3>
-          <div className="flex flex-col divide-y divide-border/40">
-            {affectedStocks.map((stock, index) => {
-              const isUp = stock.change >= 0;
-              return (
-                <Link
-                  key={stock.ticker}
-                  href={`/stocks/${stock.ticker}`}
-                  className="flex items-center justify-between py-4 hover:bg-muted/30 -mx-2 px-2 rounded-md transition-colors"
-                  data-testid={`link-stock-${stock.ticker}`}
+          <Link
+            href={`/news/${newsId}/sources`}
+            className="flex items-center gap-1.5 mb-6 hover:opacity-70 transition-opacity cursor-pointer"
+            data-testid="link-sources"
+          >
+            <div className="flex items-center -space-x-2">
+              {sources.map((source, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "w-6 h-6 rounded-full border-2 border-background flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
+                    source.color
+                  )}
+                  title={source.name}
                 >
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-foreground" data-testid={`text-ticker-${stock.ticker}`}>
-                      {stock.ticker}
-                    </p>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {stock.companyName}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <MiniStockChart isPositive={isUp} seed={newsId + index} />
-                  </div>
-                </Link>
-              );
-            })}
+                  {source.name[0]}
+                </div>
+              ))}
+            </div>
+            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+              {news.sourceCount}+ Sources
+            </span>
+          </Link>
+
+          <div className="mb-8">
+            <p className="text-base leading-relaxed text-foreground" data-testid="text-summary">
+              {news.summaryHeadline} Multiple sources are reporting on this development,
+              with analysts indicating a {isBullish ? "positive" : "cautious"} outlook.
+              The market response has been {isBullish ? "favorable" : "mixed"},
+              as investors assess the potential implications across the {news.stock?.sector || "market"} sector and related industries.
+            </p>
           </div>
-        </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Relevant Stocks</h3>
+            <div className="flex flex-col divide-y divide-border/40">
+              {affectedStocks.map((stock, index) => {
+                const isUp = stock.change >= 0;
+                return (
+                  <Link
+                    key={stock.ticker}
+                    href={`/stocks/${stock.ticker}`}
+                    className="flex items-center justify-between py-4 hover:bg-muted/30 -mx-2 px-2 rounded-md transition-colors"
+                    data-testid={`link-stock-${stock.ticker}`}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground" data-testid={`text-ticker-${stock.ticker}`}>
+                        {stock.ticker}
+                      </p>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {stock.companyName}
+                      </p>
+                    </div>
+
+                    <div>
+                      <MiniStockChart isPositive={isUp} seed={newsId + index} />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </main>
       </div>
     </div>

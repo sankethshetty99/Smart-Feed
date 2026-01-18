@@ -9,7 +9,7 @@ export const errorSchemas = {
 // Response schema for Feed Item joined with Stock
 const feedItemWithStockSchema = z.object({
   id: z.number(),
-  ticker: z.string(),
+  ticker: z.string().nullable(),
   summaryHeadline: z.string(),
   sentimentScore: z.number(),
   sourceCount: z.number(),
@@ -21,7 +21,7 @@ const feedItemWithStockSchema = z.object({
     sector: z.string(),
     currentPrice: z.number(),
     dayChangePercent: z.number(),
-  })
+  }).nullable()
 });
 
 export const api = {
@@ -55,11 +55,11 @@ export const api = {
       },
     },
     list: {
-        method: 'GET' as const,
-        path: '/api/users',
-        responses: {
-            200: z.array(z.custom<typeof users.$inferSelect>()),
-        }
+      method: 'GET' as const,
+      path: '/api/users',
+      responses: {
+        200: z.array(z.custom<typeof users.$inferSelect>()),
+      }
     }
   },
 };

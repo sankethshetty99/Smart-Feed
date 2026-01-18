@@ -60,7 +60,7 @@ export default function Feed() {
             </div>
           )}
         </div>
-        
+
       </main>
     </div>
   );

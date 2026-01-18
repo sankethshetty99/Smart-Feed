@@ -30,16 +30,16 @@ function seededRandom(seed: number) {
 export function FeedCard({ item }: FeedCardProps) {
   const [, setLocation] = useLocation();
   const isSentimentPositive = item.sentimentScore >= 0;
-  
+
   const sentimentColor = isSentimentPositive ? "text-rh-green" : "text-rh-red";
   const SentimentIcon = isSentimentPositive ? TrendingUp : TrendingDown;
-  
+
   const handleCardClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('a')) return;
     setLocation(`/news/${item.id}`);
   };
-  
+
   const sources = [
     { name: "Bloomberg", color: "bg-blue-600" },
     { name: "Reuters", color: "bg-orange-600" },
@@ -48,11 +48,12 @@ export function FeedCard({ item }: FeedCardProps) {
 
   const seed = item.id;
   const numAdditionalStocks = Math.floor(seededRandom(seed) * 3);
-  
-  const affectedStocks = [
-    { ticker: item.ticker, change: item.stock.dayChangePercent }
-  ];
-  
+
+  const affectedStocks = [];
+  if (item.ticker && item.stock) {
+    affectedStocks.push({ ticker: item.ticker, change: item.stock.dayChangePercent });
+  }
+
   for (let i = 0; i < numAdditionalStocks; i++) {
     const mockIndex = Math.floor(seededRandom(seed + i + 1) * mockTickers.length);
     const mock = mockTickers[mockIndex];
@@ -62,7 +63,7 @@ export function FeedCard({ item }: FeedCardProps) {
   }
 
   return (
-    <div 
+    <div
       className="group relative hover:bg-muted/30 border-b border-border/40 p-5 transition-all duration-200 active:scale-[0.99] cursor-pointer pl-[4px] pr-[4px] bg-[#000000]"
       onClick={handleCardClick}
       data-testid={`card-news-${item.id}`}
@@ -71,17 +72,17 @@ export function FeedCard({ item }: FeedCardProps) {
         <h4 className="text-xl leading-tight tracking-tight mb-3 group-hover:text-primary transition-colors font-semibold">
           {item.summaryHeadline}
         </h4>
-        
+
         <div className="flex items-center justify-between gap-2">
-          <Link 
+          <Link
             href={`/news/${item.id}/sources`}
             className="flex items-center gap-1.5 hover:opacity-70 transition-opacity"
             data-testid={`link-sources-${item.id}`}
           >
             <div className="flex items-center -space-x-2">
               {sources.map((source, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={cn(
                     "w-6 h-6 rounded-full border-2 border-card flex items-center justify-center text-[8px] font-bold text-white shadow-sm",
                     source.color
@@ -96,7 +97,7 @@ export function FeedCard({ item }: FeedCardProps) {
               {item.sourceCount}+ Sources
             </span>
           </Link>
-          
+
           <div className={cn(
             "flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secondary",
             sentimentColor
@@ -110,7 +111,7 @@ export function FeedCard({ item }: FeedCardProps) {
         {affectedStocks.map((stock) => {
           const isUp = stock.change >= 0;
           return (
-            <Link 
+            <Link
               key={stock.ticker}
               href={`/stocks/${stock.ticker}`}
               className="flex items-center text-sm hover:opacity-70 transition-opacity"

@@ -1,11 +1,11 @@
 import React from "react";
 
-interface IPhoneMockupProps {
+interface IPhoneMockupProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
 }
 
 export const IPhoneMockup = React.forwardRef<HTMLDivElement, IPhoneMockupProps>(
-    ({ children }, ref) => {
+    ({ children, style, ...props }, ref) => {
         return (
             <div
                 ref={ref}
@@ -19,7 +19,9 @@ export const IPhoneMockup = React.forwardRef<HTMLDivElement, IPhoneMockupProps>(
                     boxShadow:
                         "0 0 0 12px #1a1a1a, 0 0 0 14px #333, 0 25px 50px rgba(0,0,0,0.4)",
                     overflow: "hidden",
+                    ...style,
                 }}
+                {...props}
             >
                 {/* Dynamic Island */}
                 <div

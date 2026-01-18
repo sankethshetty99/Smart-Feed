@@ -153,8 +153,9 @@ export default function StockDetail() {
   const isAfterHoursPositive = stock.afterHoursPercent >= 0;
 
   return (
-    <div className="pb-32 bg-black text-white min-h-screen">
-      <div className="w-full max-w-3xl mx-auto px-3 sm:px-4">
+    <div className="h-full bg-black text-white flex flex-col relative overflow-hidden">
+      {/* Header - Static */}
+      <div className="w-full max-w-3xl mx-auto px-3 sm:px-4 shrink-0 z-10 bg-black/80 backdrop-blur-sm sticky top-0">
         <header className="flex items-center justify-start px-4 py-3">
           <Button
             size="icon"
@@ -166,7 +167,10 @@ export default function StockDetail() {
             <ChevronLeft className="w-6 h-6" />
           </Button>
         </header>
+      </div>
 
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto px-3 sm:px-4 pb-32 scrollbar-hide">
         <main className="px-5">
           {/* Stock Header */}
           <p className="text-sm text-gray-500 font-medium mb-1" data-testid="text-ticker">
@@ -344,7 +348,7 @@ export default function StockDetail() {
         </main>
       </div>
 
-      {/* Bottom Trade Bar */}
+      {/* Bottom Trade Bar - Absolute to container */}
       <div className="absolute bottom-0 left-0 right-0 bg-black border-t border-gray-800 px-5 py-4 z-50">
         <div className="flex items-center justify-between max-w-3xl mx-auto px-3 sm:px-4">
           <button className="flex items-center gap-2 text-white font-medium" data-testid="button-individual">
