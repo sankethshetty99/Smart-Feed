@@ -47,11 +47,17 @@ export function FeedCard({ item }: FeedCardProps) {
   ];
 
   const seed = item.id;
-  const numAdditionalStocks = Math.floor(seededRandom(seed) * 3);
 
-  const affectedStocks = [];
+  const affectedStocks: { ticker: string; change: number }[] = [];
   if (item.ticker && item.stock) {
     affectedStocks.push({ ticker: item.ticker, change: item.stock.dayChangePercent });
+  }
+
+  let numAdditionalStocks = Math.floor(seededRandom(seed) * 3);
+
+  // Ensure at least one stock is shown if none exists yet
+  if (affectedStocks.length === 0 && numAdditionalStocks === 0) {
+    numAdditionalStocks = 1;
   }
 
   for (let i = 0; i < numAdditionalStocks; i++) {
