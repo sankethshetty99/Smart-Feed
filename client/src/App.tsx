@@ -11,6 +11,9 @@ import Profile from "@/pages/Profile";
 import StockDetail from "@/pages/StockDetail";
 import NewsDetail from "@/pages/NewsDetail";
 import SourcesDetail from "@/pages/SourcesDetail";
+import StrategyList from "@/pages/StrategyList";
+import StrategyBuilder from "@/pages/Strategy";
+import Digest from "@/pages/Digest";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,7 +24,10 @@ function Router() {
       <Route path="/news/:id" component={NewsDetail} />
       <Route path="/news/:id/sources" component={SourcesDetail} />
       <Route path="/search" component={Search} />
+      <Route path="/strategy" component={StrategyList} />
+      <Route path="/strategy/new" component={StrategyBuilder} />
       <Route path="/profile" component={Profile} />
+      <Route path="/profile/digest" component={Digest} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Compass, Search, User } from "lucide-react";
+import { Compass, Search, User, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function BottomNav() {
@@ -8,6 +8,7 @@ export function BottomNav() {
   const navItems = [
     { href: "/", label: "Feed", icon: Compass },
     { href: "/search", label: "Search", icon: Search },
+    { href: "/strategy", label: "Strategy", icon: Zap },
     { href: "/profile", label: "Profile", icon: User },
   ];
 

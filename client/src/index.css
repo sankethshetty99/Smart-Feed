@@ -20,7 +20,8 @@
   --popover-foreground: 0 0% 0%;
 
   /* Robinhood Green */
-  --primary: 147 50% 47%;
+  /* Robinhood Green #00C805 -> HSL(122, 100%, 39%) */
+  --primary: 122 100% 39%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 0 0% 96%;
@@ -29,7 +30,7 @@
   --muted: 0 0% 96%;
   --muted-foreground: 0 0% 45%;
 
-  --accent: 147 50% 47%;
+  --accent: 122 100% 39%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 348 83% 47%;
@@ -38,7 +39,7 @@
 
   --border: 0 0% 90%;
   --input: 0 0% 90%;
-  --ring: 147 50% 47%;
+  --ring: 122 100% 39%;
 
   --radius: 0.75rem;
 }
@@ -54,7 +55,7 @@
   --popover: 0 0% 10%;
   --popover-foreground: 0 0% 100%;
 
-  --primary: 147 60% 50%;
+  --primary: 122 100% 39%;
   /* Brighter Green */
   --primary-foreground: 0 0% 0%;
 
@@ -64,7 +65,7 @@
   --muted: 0 0% 15%;
   --muted-foreground: 0 0% 60%;
 
-  --accent: 147 60% 50%;
+  --accent: 122 100% 39%;
   --accent-foreground: 0 0% 0%;
 
   --destructive: 348 90% 60%;
@@ -73,7 +74,7 @@
 
   --border: 0 0% 20%;
   --input: 0 0% 20%;
-  --ring: 147 60% 50%;
+  --ring: 122 100% 39%;
 }
 
 @layer base {
@@ -95,11 +96,11 @@
 
 @layer utilities {
   .text-rh-green {
-    color: hsl(147, 50%, 47%);
+    color: #00C805;
   }
 
   .dark .text-rh-green {
-    color: hsl(147, 60%, 50%);
+    color: #00C805;
   }
 
   .text-rh-red {
@@ -119,11 +120,11 @@
   }
 
   .bg-rh-green {
-    background-color: hsl(147, 50%, 47%);
+    background-color: #00C805;
   }
 
   .dark .bg-rh-green {
-    background-color: hsl(147, 60%, 50%);
+    background-color: #00C805;
   }
 
   .bg-rh-green-subtle {

@@ -57,7 +57,19 @@ export const feedItemsRelations = relations(feedItems, ({ one }) => ({
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertStockSchema = createInsertSchema(stocks);
 export const insertUserInterestSchema = createInsertSchema(userInterests).omit({ id: true });
+
 export const insertFeedItemSchema = createInsertSchema(feedItems).omit({ id: true });
+
+export const strategies = pgTable("strategies", {
+  id: serial("id").primaryKey(),
+  title: text("title"),
+  description: text("description").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertStrategySchema = createInsertSchema(strategies).omit({ id: true, createdAt: true });
+export type Strategy = typeof strategies.$inferSelect;
+export type InsertStrategy = typeof strategies.$inferInsert;
 
 // Types
 export type User = typeof users.$inferSelect;

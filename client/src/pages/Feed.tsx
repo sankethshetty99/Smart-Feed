@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Feed() {
   // Mock logged in user ID = 1
+  // Mock logged in user ID = 1
   const USER_ID = 1;
   const { data: user, isLoading: isUserLoading } = useUser(USER_ID);
   const { data: feedItems, isLoading: isFeedLoading, error } = useFeed(USER_ID);

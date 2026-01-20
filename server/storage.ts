@@ -1,7 +1,7 @@
 import { db } from "./db";
 import {
-  users, stocks, userInterests, feedItems,
-  type User, type Stock, type UserInterest, type FeedItem
+  users, stocks, userInterests, feedItems, strategies,
+  type User, type Stock, type UserInterest, type FeedItem, type Strategy
 } from "@shared/schema";
 import { eq, inArray, desc, gt, isNull, or } from "drizzle-orm";
 
@@ -17,6 +17,9 @@ export interface IStorage {
   createStock(stock: typeof stocks.$inferInsert): Promise<Stock>;
   createUserInterest(interest: typeof userInterests.$inferInsert): Promise<UserInterest>;
   createFeedItem(item: typeof feedItems.$inferInsert): Promise<FeedItem>;
+  // Strategy methods
+  createStrategy(strategy: typeof strategies.$inferInsert): Promise<Strategy>;
+  getStrategies(): Promise<Strategy[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -159,11 +162,21 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(feedItems);
   }
 
+  async createStrategy(strategy: typeof strategies.$inferInsert): Promise<Strategy> {
+    const [newStrategy] = await db.insert(strategies).values(strategy).returning();
+    return newStrategy;
+  }
+
+  async getStrategies(): Promise<Strategy[]> {
+    return await db.select().from(strategies).orderBy(desc(strategies.createdAt));
+  }
+
   async clearAll(): Promise<void> {
     await db.delete(feedItems);
     await db.delete(userInterests);
     await db.delete(stocks);
     await db.delete(users);
+    await db.delete(strategies);
   }
 }
 

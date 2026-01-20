@@ -47,6 +47,24 @@ export async function registerRoutes(
         res.json(users);
     });
 
+    // Strategies Endpoints
+    app.post("/api/strategies", async (req, res) => {
+        // In a real app we'd validate the body against insertStrategySchema
+        // and probably associate it with the logged-in user.
+        // For this prototype, we'll just save it.
+        try {
+            const strategy = await storage.createStrategy(req.body);
+            res.status(201).json(strategy);
+        } catch (error) {
+            res.status(400).json({ message: "Failed to create strategy" });
+        }
+    });
+
+    app.get("/api/strategies", async (req, res) => {
+        const strategies = await storage.getStrategies();
+        res.json(strategies);
+    });
+
     // Seed Data Endpoint (for convenience in prototype)
     app.post("/api/seed", async (req, res) => {
         await seedDatabase();

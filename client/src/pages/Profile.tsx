@@ -1,11 +1,14 @@
 import { useUser } from "@/hooks/use-user";
-import { User as UserIcon, Settings, Shield, HelpCircle, LogOut } from "lucide-react";
+import { User as UserIcon, Settings, Shield, HelpCircle, LogOut, Newspaper } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function Profile() {
   const USER_ID = 1;
   const { data: user } = useUser(USER_ID);
+  const [, setLocation] = useLocation();
 
   const menuItems = [
+    { label: "Digests", icon: Newspaper, onClick: () => setLocation("/profile/digest") },
     { label: "Settings", icon: Settings },
     { label: "Security & Privacy", icon: Shield },
     { label: "Help & Support", icon: HelpCircle },
@@ -18,7 +21,7 @@ export default function Profile() {
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl tracking-tight font-semibold">Profile</h1>
         </div>
-        
+
         <div className="mb-8 text-center">
           <div className="w-24 h-24 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center text-4xl font-bold text-muted-foreground">
             {user?.username?.[0]?.toUpperCase() || <UserIcon className="w-10 h-10" />}
@@ -33,6 +36,7 @@ export default function Profile() {
           {menuItems.map((item) => (
             <button
               key={item.label}
+              onClick={item.onClick}
               className={`w-full flex items-center p-4 bg-card rounded-md border border-border hover:bg-muted/50 transition-colors ${item.className || ""}`}
               data-testid={`button-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
